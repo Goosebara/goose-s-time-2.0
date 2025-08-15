@@ -973,44 +973,138 @@ body::before {
         padding-left: 0; /* 移除左邊距 */
     }
     
-    /* 強化即將到來項目 */
-    .upcoming-item {
-        background: rgba(52, 199, 89, 0.2);
-        border: 2px solid var(--apple-green);
-        padding: var(--spacing-md);
-        margin: var(--spacing-md) 0; /* 增加間距 */
+    /* 今日總覽頁面強化 */
+    .overview-container {
+        display: block; /* 手機版改為單欄 */
+        gap: var(--spacing-lg);
+    }
+    
+    .overview-section {
+        background: var(--glass-ultra-light);
+        border: 2px solid var(--glass-border-light);
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+        margin-bottom: var(--spacing-lg);
         border-radius: var(--radius-md);
-        font-size: 0.9375rem;
-        backdrop-filter: blur(20px);
+        padding: 0; /* 重設內邊距 */
+        overflow: hidden;
+    }
+    
+    .overview-section.upcoming-block {
+        background: linear-gradient(135deg, rgba(0, 122, 255, 0.2) 0%, rgba(52, 199, 89, 0.15) 100%);
+        border: 2px solid rgba(0, 122, 255, 0.3);
+    }
+    
+    /* 今日總覽區塊標題 */
+    .overview-title {
+        font-size: 1.125rem;
+        font-weight: 700;
+        margin: 0;
+        padding: var(--spacing-md);
+        color: var(--text-primary);
+        background: rgba(0, 0, 0, 0.03);
+        border-bottom: 2px solid var(--separator);
+    }
+    
+    /* 今日總覽內容區域 */
+    .overview-content {
+        padding: 0;
+        min-height: auto;
+    }
+    
+    /* 今日項目樣式強化 */
+    .today-item {
+        background: rgba(255, 255, 255, 0.6);
+        padding: var(--spacing-md);
+        margin: 0;
+        border-bottom: 1px solid var(--separator);
         transition: all var(--transition-fast);
-        box-shadow: 0 2px 8px rgba(52, 199, 89, 0.15);
+        font-size: 0.9375rem;
+        line-height: 1.5;
     }
     
-    .upcoming-item:hover {
-        background: rgba(52, 199, 89, 0.25);
-        transform: translateX(2px);
+    .today-item:last-child {
+        border-bottom: none;
     }
     
-    .upcoming-item .upcoming-date {
+    .today-item:hover {
+        background: rgba(255, 255, 255, 0.8);
+    }
+    
+    .today-item.highlight {
+        background: rgba(0, 122, 255, 0.15);
+        border-left: 4px solid var(--apple-blue);
+        border-bottom: 1px solid rgba(0, 122, 255, 0.2);
+    }
+    
+    /* 無事件狀態 */
+    .no-events {
+        background: rgba(0, 0, 0, 0.03);
+        border: none;
+        border-radius: 0;
+        margin: 0;
+        padding: var(--spacing-xl);
+        text-align: center;
+        color: var(--text-tertiary);
+        font-style: italic;
+        font-size: 0.9375rem;
+    }
+    
+    /* 載入狀態 */
+    .loading-item {
+        background: rgba(0, 122, 255, 0.1);
+        border: none;
+        border-radius: 0;
+        margin: 0;
+        padding: var(--spacing-xl);
+        text-align: center;
+        color: var(--text-secondary);
+        font-size: 0.9375rem;
+        animation: pulse 2s ease-in-out infinite;
+    }
+    
+    /* 今日總覽的近期預告項目 */
+    .overview-section .upcoming-item {
+        background: rgba(52, 199, 89, 0.15);
+        border: none;
+        border-bottom: 1px solid rgba(52, 199, 89, 0.2);
+        padding: var(--spacing-md);
+        margin: 0;
+        border-radius: 0;
+        font-size: 0.9375rem;
+        backdrop-filter: none;
+        box-shadow: none;
+    }
+    
+    .overview-section .upcoming-item:last-child {
+        border-bottom: none;
+    }
+    
+    .overview-section .upcoming-item:hover {
+        background: rgba(52, 199, 89, 0.2);
+        transform: none;
+    }
+    
+    .overview-section .upcoming-item .upcoming-date {
         background: var(--apple-green);
         color: white;
-        padding: var(--spacing-xs) var(--spacing-sm);
+        padding: 2px var(--spacing-xs);
         border-radius: var(--radius-xs);
         font-size: 0.75rem;
         font-weight: 600;
-        margin-bottom: var(--spacing-sm);
+        margin-bottom: var(--spacing-xs);
         display: inline-block;
     }
     
-    /* 強化標題分隔 */
-    .upcoming-section h4 {
+    /* 近期預告的標題樣式 */
+    .overview-section h4 {
         background: rgba(0, 122, 255, 0.15);
         padding: var(--spacing-sm) var(--spacing-md);
-        margin: var(--spacing-lg) calc(-var(--spacing-md)) var(--spacing-md) calc(-var(--spacing-md));
-        border-radius: var(--radius-sm);
-        border: 1px solid rgba(0, 122, 255, 0.3);
+        margin: 0;
+        border-bottom: 1px solid rgba(0, 122, 255, 0.3);
+        border-radius: 0;
         font-size: 0.875rem;
         font-weight: 600;
+        color: var(--apple-blue);
     }
     
     /* 強化事件項目 */
