@@ -459,55 +459,53 @@ const SPREADSHEET_ID = '1VScB4K-05GBe8p6hcWRyE2vCVRG-x4rmWfCigixPZNg';
         }
 
         // 渲染預排行程資料
-        function renderAppointments(data) {
-            if (!data || data.length <= 1) {
-                return '<div class="error">無法載入預排行程資料或資料為空</div>';
+        // 修正後的 renderAppointments 函數
+function renderAppointments(data) {
+    if (!data || data.length <= 1) {
+        return '<div class="error">無法載入預排行程資料或資料為空</div>';
+    }
+
+    // 按日期排序
+    const rows = data.slice(1).sort((a, b) => {
+        const dateA = parseDate(a[0]);
+        const dateB = parseDate(b[0]);
+        if (!dateA && !dateB) return 0;
+        if (!dateA) return 1;
+        if (!dateB) return -1;
+        return dateA - dateB;
+    });
+
+    let html = '<div class="events-list">';
+
+    rows.forEach(row => {
+        if (row[0]) { // 確保有開始日期
+            const startDate = row[0] || '';    // A欄位：活動開始日期
+            const endDate = row[1] || '';      // B欄位：活動結束日期
+            const location = row[2] || '';     // C欄位：活動地點
+
+            let cssClass = 'event-item';
+            if (isDatePast(startDate)) {
+                cssClass += ' past';
+            } else if (isDateToday(startDate)) {
+                cssClass += ' today';
+            } else if (isDateUpcoming(startDate)) {
+                cssClass += ' upcoming';
             }
 
-            // 按日期排序
-            const rows = data.slice(1).sort((a, b) => {
-                const dateA = parseDate(a[0]);
-                const dateB = parseDate(b[0]);
-                if (!dateA && !dateB) return 0;
-                if (!dateA) return 1;
-                if (!dateB) return -1;
-                return dateA - dateB;
-            });
-
-            let html = '<div class="activity-timeline">';
-
-            rows.forEach(row => {
-                if (row[0]) { // 確保有開始日期
-                    const startDate = row[0] || '';    // A欄位：活動開始日期
-                    const endDate = row[1] || '';      // B欄位：活動結束日期
-                    const location = row[2] || '';     // C欄位：活動地點
-
-                    let cssClass = 'activity-item';
-                    if (isDatePast(startDate)) {
-                        cssClass += ' past';
-                    } else if (isDateToday(startDate)) {
-                        cssClass += ' today-marker';
-                    } else if (isDateUpcoming(startDate)) {
-                        cssClass += ' upcoming';
-                    }
-
-                    html += `
-                        <div class="${cssClass}">
-                            <div class="activity-date">
-                                📅 ${startDate}${endDate && endDate !== startDate ? ` ~ ${endDate}` : ''}
-                            </div>
-                            <div class="activity-title">${location || '預排行程'}</div>
-                            <div class="activity-details">
-                                ${location ? `<span>📍 ${location}</span>` : ''}
-                            </div>
-                        </div>
-                    `;
-                }
-            });
-
-            html += '</div>';
-            return html;
+            html += `
+                <div class="${cssClass}">
+                    <div class="item-title">${location || '預排行程'}</div>
+                    <div class="item-details">
+                        ${startDate}${endDate && endDate !== startDate ? ` ~ ${endDate}` : ''}
+                    </div>
+                </div>
+            `;
         }
+    });
+
+    html += '</div>';
+    return html;
+}
 
         // 載入所有資料
         async function loadAllData() {
@@ -540,3 +538,4 @@ const SPREADSHEET_ID = '1VScB4K-05GBe8p6hcWRyE2vCVRG-x4rmWfCigixPZNg';
         document.addEventListener('DOMContentLoaded', function() {
             loadAllData();
         });
+
