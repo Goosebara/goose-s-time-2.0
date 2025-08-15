@@ -13,27 +13,33 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
 <body>
+    <!-- 固定頂部區域 -->
+    <div class="fixed-header">
+        <div class="container">
+            <header class="header">
+                <h1>Mr.K's Life Balance</h1>
+            </header>
+
+            <nav class="tabs" role="tablist">
+                <button class="tab-button active" onclick="showTab('overview')" role="tab" aria-selected="true" aria-controls="overview">
+                    今日總覽
+                </button>
+                <button class="tab-button" onclick="showTab('schedule')" role="tab" aria-selected="false" aria-controls="schedule">
+                    班表
+                </button>
+                <button class="tab-button" onclick="showTab('academic')" role="tab" aria-selected="false" aria-controls="academic">
+                    學術活動
+                </button>
+                <button class="tab-button" onclick="showTab('appointments')" role="tab" aria-selected="false" aria-controls="appointments">
+                    預排行程
+                </button>
+            </nav>
+        </div>
+    </div>
+
+    <!-- 主要內容區域 -->
     <div class="container">
-        <header class="header">
-            <h1>Mr.K's Life Balance</h1>
-        </header>
-
-        <nav class="tabs" role="tablist">
-            <button class="tab-button active" onclick="showTab('overview')" role="tab" aria-selected="true" aria-controls="overview">
-                今日總覽
-            </button>
-            <button class="tab-button" onclick="showTab('schedule')" role="tab" aria-selected="false" aria-controls="schedule">
-                班表
-            </button>
-            <button class="tab-button" onclick="showTab('academic')" role="tab" aria-selected="false" aria-controls="academic">
-                學術活動
-            </button>
-            <button class="tab-button" onclick="showTab('appointments')" role="tab" aria-selected="false" aria-controls="appointments">
-                預排行程
-            </button>
-        </nav>
-
-        <main>
+        <main class="main-content">
             <!-- 今日總覽 - 改為條列式 -->
             <section id="overview" class="tab-content active" role="tabpanel" aria-labelledby="overview-tab">
                 <div class="section-header">
