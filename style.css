@@ -912,20 +912,23 @@ body::before {
         font-size: 1.875rem;
     }
     
-    /* 分頁改為垂直堆疊 */
+    /* 分頁保持水平排列，但縮小字體和間距 */
     .tabs {
-        flex-direction: column;
-        gap: var(--spacing-xs);
-        padding: var(--spacing-xs);
+        flex-direction: row; /* 改回水平 */
+        gap: 2px; /* 縮小間距 */
+        padding: 3px;
         margin-bottom: var(--spacing-md);
     }
     
     .tab-button {
-        width: 100%;
-        padding: var(--spacing-md);
-        font-size: 0.875rem;
-        min-height: 48px;
-        border-radius: var(--radius-sm);
+        flex: 1; /* 平均分配寬度 */
+        padding: var(--spacing-sm) 2px; /* 縮小內邊距 */
+        font-size: 0.75rem; /* 縮小字體 */
+        min-height: 44px; /* 保持觸控標準 */
+        border-radius: var(--radius-xs);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     
     /* 區段調整 */
