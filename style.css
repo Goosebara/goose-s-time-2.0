@@ -643,74 +643,379 @@ body::before {
     transform: scale(0.95);
 }
 
-/* ===== 響應式設計 ===== */
-@media (max-width: 768px) {
+/* ===== 響應式設計 - 完整手機優化 ===== */
+
+/* 平板尺寸 (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .container {
+        max-width: 100%;
+        padding: var(--spacing-lg);
+    }
+    
+    .header h1 {
+        font-size: 2.5rem;
+    }
+    
+    .tabs {
+        max-width: 100%;
+    }
+}
+
+/* 小平板和大手機 (481px - 767px) */
+@media (max-width: 767px) {
+    :root {
+        /* 調整手機版間距 */
+        --spacing-lg: 20px;
+        --spacing-xl: 28px;
+        --spacing-2xl: 36px;
+    }
+    
     .container {
         padding: var(--spacing-md);
+        max-width: 100%;
     }
     
     .header {
-        padding: var(--spacing-lg);
+        padding: var(--spacing-lg) var(--spacing-md);
         margin-bottom: var(--spacing-lg);
+        border-radius: var(--radius-lg);
+    }
+    
+    .header h1 {
+        font-size: 2.25rem;
+        line-height: 1.1;
+    }
+    
+    /* 分頁按鈕手機優化 */
+    .tabs {
+        margin-bottom: var(--spacing-lg);
+        padding: 3px;
+        max-width: 100%;
+    }
+    
+    .tab-button {
+        padding: var(--spacing-md) var(--spacing-sm);
+        font-size: 0.875rem;
+        min-height: 48px; /* iOS 推薦觸控尺寸 */
+        font-weight: 500;
+    }
+    
+    /* 區段標題調整 */
+    .section-header {
+        margin-bottom: var(--spacing-lg);
+        padding-bottom: var(--spacing-md);
+    }
+    
+    .section-title {
+        font-size: 1.75rem;
+        margin-bottom: var(--spacing-xs);
     }
     
     .section-meta {
         flex-direction: column;
         gap: var(--spacing-xs);
+        font-size: 0.8125rem;
     }
     
-    .schedule-row {
-        grid-template-columns: 1fr;
-        gap: var(--spacing-xs);
+    /* 資訊區塊手機優化 */
+    .info-block {
+        margin-bottom: var(--spacing-lg);
+        border-radius: var(--radius-md);
+    }
+    
+    .block-header {
+        padding: var(--spacing-lg) var(--spacing-md) var(--spacing-md) var(--spacing-md);
+    }
+    
+    .block-title {
+        font-size: 1.125rem;
+    }
+    
+    /* 列表項目手機優化 */
+    .list-item {
         padding: var(--spacing-md);
+        font-size: 0.9375rem;
+    }
+    
+    .item-title {
+        font-size: 0.9375rem;
+        line-height: 1.3;
+    }
+    
+    .item-details {
+        font-size: 0.875rem;
+        margin-top: var(--spacing-xs);
+    }
+    
+    /* 班表手機版 - 改為卡片式 */
+    .schedule-row {
+        display: block;
+        padding: var(--spacing-md);
+        margin-bottom: var(--spacing-sm);
+        background: var(--glass-ultra-light);
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--glass-border-light);
     }
     
     .schedule-row.header {
-        display: none;
+        display: none; /* 隱藏表格標題 */
     }
     
+    .schedule-row:last-child {
+        margin-bottom: 0;
+        border-bottom: none;
+    }
+    
+    .schedule-cell {
+        display: block;
+        margin-bottom: var(--spacing-xs);
+        font-size: 0.875rem;
+    }
+    
+    .schedule-cell.date {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: var(--spacing-sm);
+        color: var(--apple-blue);
+    }
+    
+    .schedule-cell.session {
+        padding: var(--spacing-xs) 0;
+        border-bottom: 1px solid var(--separator-light);
+    }
+    
+    .schedule-cell.session:last-child {
+        border-bottom: none;
+    }
+    
+    /* 時間線手機優化 */
     .timeline-list {
         padding-left: var(--spacing-lg);
     }
     
     .timeline-list::before {
         left: var(--spacing-sm);
+        width: 1px;
+    }
+    
+    .timeline-item {
+        padding: var(--spacing-md);
+        margin-bottom: var(--spacing-md);
+        font-size: 0.9375rem;
     }
     
     .timeline-item::after {
-        left: calc(-var(--spacing-lg) - 6px);
+        left: calc(-var(--spacing-lg) - 4px);
+        width: 8px;
+        height: 8px;
+        top: var(--spacing-md);
     }
     
+    /* 事件列表手機優化 */
+    .event-item {
+        padding: var(--spacing-md);
+        font-size: 0.9375rem;
+    }
+    
+    /* 重新整理按鈕手機優化 */
     .refresh-btn {
         bottom: var(--spacing-lg);
-        right: var(--spacing-lg);
+        right: var(--spacing-md);
+        width: 52px;
+        height: 52px;
+        font-size: 1.125rem;
+    }
+}
+
+/* 手機直式 (320px - 480px) */
+@media (max-width: 480px) {
+    :root {
+        /* 極小螢幕間距調整 */
+        --spacing-md: 12px;
+        --spacing-lg: 16px;
+        --spacing-xl: 24px;
+    }
+    
+    .container {
+        padding: var(--spacing-sm);
+    }
+    
+    .header {
+        padding: var(--spacing-md);
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .header h1 {
+        font-size: 1.875rem;
+    }
+    
+    /* 分頁改為垂直堆疊 */
+    .tabs {
+        flex-direction: column;
+        gap: var(--spacing-xs);
+        padding: var(--spacing-xs);
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .tab-button {
+        width: 100%;
+        padding: var(--spacing-md);
+        font-size: 0.875rem;
+        min-height: 48px;
+        border-radius: var(--radius-sm);
+    }
+    
+    /* 區段調整 */
+    .section-title {
+        font-size: 1.5rem;
+    }
+    
+    .section-meta {
+        font-size: 0.75rem;
+    }
+    
+    /* 資訊區塊緊湊化 */
+    .info-block {
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .block-header {
+        padding: var(--spacing-md) var(--spacing-sm) var(--spacing-sm) var(--spacing-sm);
+    }
+    
+    .block-title {
+        font-size: 1rem;
+    }
+    
+    .list-item,
+    .event-item {
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+    
+    .item-title {
+        font-size: 0.875rem;
+    }
+    
+    .item-details {
+        font-size: 0.8125rem;
+    }
+    
+    /* 班表卡片緊湊化 */
+    .schedule-row {
+        padding: var(--spacing-sm) var(--spacing-md);
+        margin-bottom: var(--spacing-xs);
+    }
+    
+    .schedule-cell.date {
+        font-size: 0.9375rem;
+        margin-bottom: var(--spacing-xs);
+    }
+    
+    .schedule-cell.session {
+        font-size: 0.8125rem;
+        padding: var(--spacing-xs) 0;
+    }
+    
+    /* 時間線緊湊化 */
+    .timeline-item {
+        padding: var(--spacing-sm) var(--spacing-md);
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .timeline-item::after {
+        width: 6px;
+        height: 6px;
+        top: var(--spacing-sm);
+    }
+    
+    /* 重新整理按鈕調整 */
+    .refresh-btn {
+        bottom: var(--spacing-md);
+        right: var(--spacing-sm);
         width: 48px;
         height: 48px;
         font-size: 1rem;
     }
 }
 
-@media (max-width: 480px) {
-    .tabs {
-        flex-direction: column;
-        gap: var(--spacing-xs);
-        padding: var(--spacing-sm);
+/* 極小螢幕 (小於 320px) */
+@media (max-width: 320px) {
+    .container {
+        padding: var(--spacing-xs);
+    }
+    
+    .header h1 {
+        font-size: 1.625rem;
+    }
+    
+    .section-title {
+        font-size: 1.375rem;
     }
     
     .tab-button {
-        padding: var(--spacing-md);
+        padding: var(--spacing-sm);
+        font-size: 0.8125rem;
     }
-    
-    .info-block,
-    .table-container,
-    .events-container {
+}
+
+/* 橫向手機 (landscape) */
+@media (max-width: 767px) and (orientation: landscape) {
+    .header {
+        padding: var(--spacing-md) var(--spacing-lg);
         margin-bottom: var(--spacing-md);
     }
     
-    .block-header,
-    .list-item,
-    .event-item {
-        padding: var(--spacing-md);
+    .header h1 {
+        font-size: 2rem;
+    }
+    
+    .tabs {
+        flex-direction: row;
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .tab-button {
+        padding: var(--spacing-sm) var(--spacing-md);
+        min-height: 40px;
+    }
+    
+    .section-header {
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .info-block {
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .refresh-btn {
+        width: 44px;
+        height: 44px;
+        font-size: 0.875rem;
+    }
+}
+
+/* iOS Safari 特殊處理 */
+@supports (-webkit-touch-callout: none) {
+    .tab-button,
+    .refresh-btn {
+        -webkit-tap-highlight-color: transparent;
+        -webkit-appearance: none;
+    }
+    
+    /* 防止雙擊縮放 */
+    .tab-button {
+        touch-action: manipulation;
+    }
+}
+
+/* 高解析度螢幕優化 */
+@media (-webkit-min-device-pixel-ratio: 2) {
+    .timeline-list::before {
+        width: 0.5px;
+    }
+    
+    .list-item {
+        border-bottom-width: 0.5px;
     }
 }
 
