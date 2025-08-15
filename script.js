@@ -1,4 +1,4 @@
-        const SPREADSHEET_ID = '1VScB4K-05GBe8p6hcWRyE2vCVRG-x4rmWfCigixPZNg';
+const SPREADSHEET_ID = '1VScB4K-05GBe8p6hcWRyE2vCVRG-x4rmWfCigixPZNg';
         
         // 取得各分頁的 GID
         const SHEET_GIDS = {
@@ -145,44 +145,43 @@
             document.getElementById('today-schedule').innerHTML = html;
         }
 
-// 渲染今日學術活動
-function renderTodayAcademic() {
-    if (!academicData) {
-        document.getElementById('today-academic').innerHTML = '<div class="no-events">學術活動資料載入中...</div>';
-        return;
-    }
+        // 渲染今日學術活動
+        function renderTodayAcademic() {
+            if (!academicData) {
+                document.getElementById('today-academic').innerHTML = '<div class="no-events">學術活動資料載入中...</div>';
+                return;
+            }
 
-    const todayString = getTodayString(); // 114/08/12
-    const todayStringWithZero = '0' + todayString; // 0114/08/12
-    let html = '';
-    let found = false;
+            const todayString = getTodayString(); // 114/08/12
+            const todayStringWithZero = '0' + todayString; // 0114/08/12
+            let html = '';
+            let found = false;
 
-    const rows = academicData.slice(1);
-    rows.forEach(row => {
-        // 比對兩種格式
-        if (row[1] === todayString || row[1] === todayStringWithZero) {
-            found = true;
-            const time = row[2] || '';
-            const title = row[3] || '未命名活動';
-            const location = row[4] || '';
-            const speaker = row[5] || '';
+            const rows = academicData.slice(1);
+            rows.forEach(row => {
+                // 比對兩種格式
+                if (row[1] === todayString || row[1] === todayStringWithZero) {
+                    found = true;
+                    const time = row[2] || '';
+                    const title = row[3] || '未命名活動';
+                    const location = row[4] || '';
+                    const speaker = row[5] || '';
 
-            html += '<div class="today-item highlight">';
-            html += `<strong>🎓 ${title}</strong><br>`;
-            if (time) html += `⏰ ${time}<br>`;
-            if (location) html += `📍 ${location}<br>`;
-            if (speaker) html += `🎤 ${speaker}`;
-            html += '</div>';
+                    html += '<div class="today-item highlight">';
+                    html += `<strong>🎓 ${title}</strong><br>`;
+                    if (time) html += `⏰ ${time}<br>`;
+                    if (location) html += `📍 ${location}<br>`;
+                    if (speaker) html += `🎤 ${speaker}`;
+                    html += '</div>';
+                }
+            });
+
+            if (!found) {
+                html = '<div class="no-events">今日無學術活動安排</div>';
+            }
+
+            document.getElementById('today-academic').innerHTML = html;
         }
-    });
-
-    if (!found) {
-        html = '<div class="no-events">今日無學術活動安排</div>';
-    }
-
-    document.getElementById('today-academic').innerHTML = html;
-}
-
 
         // 渲染今日預排行程
         function renderTodayAppointments() {
@@ -345,7 +344,27 @@ function renderTodayAcademic() {
             }
 
             const header = data[0];
-            const rows = data.slice(1);
+            // 按日期和星期排序
+            const rows = data.slice(1).sort((a, b) => {
+                // 星期排序優先級
+                const weekOrder = {
+                    '星期一': 1, '星期二': 2, '星期三': 3, '星期四': 4, 
+                    '星期五': 5, '星期六': 6, '星期日': 7
+                };
+                
+                // 先按月份排序，再按星期排序
+                const monthA = a[0] || '';
+                const monthB = b[0] || '';
+                
+                if (monthA !== monthB) {
+                    return monthA.localeCompare(monthB);
+                }
+                
+                const weekA = weekOrder[a[1]] || 999;
+                const weekB = weekOrder[b[1]] || 999;
+                return weekA - weekB;
+            });
+
             let html = '<div class="schedule-grid">';
 
             rows.forEach(row => {
@@ -390,7 +409,16 @@ function renderTodayAcademic() {
                 return '<div class="error">無法載入學術活動資料或資料為空</div>';
             }
 
-            const rows = data.slice(1);
+            // 按日期排序
+            const rows = data.slice(1).sort((a, b) => {
+                const dateA = parseDate(a[1]);
+                const dateB = parseDate(b[1]);
+                if (!dateA && !dateB) return 0;
+                if (!dateA) return 1;
+                if (!dateB) return -1;
+                return dateA - dateB;
+            });
+
             let html = '<div class="activity-timeline">';
 
             rows.forEach(row => {
@@ -436,7 +464,16 @@ function renderTodayAcademic() {
                 return '<div class="error">無法載入預排行程資料或資料為空</div>';
             }
 
-            const rows = data.slice(1);
+            // 按日期排序
+            const rows = data.slice(1).sort((a, b) => {
+                const dateA = parseDate(a[0]);
+                const dateB = parseDate(b[0]);
+                if (!dateA && !dateB) return 0;
+                if (!dateA) return 1;
+                if (!dateB) return -1;
+                return dateA - dateB;
+            });
+
             let html = '<div class="activity-timeline">';
 
             rows.forEach(row => {
