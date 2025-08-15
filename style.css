@@ -661,13 +661,158 @@ body::before {
     }
 }
 
-/* 小平板和大手機 (481px - 767px) */
+/* ===== 手機版玻璃效果強化 ===== */
 @media (max-width: 767px) {
     :root {
+        /* 手機版加強玻璃效果的對比度 */
+        --glass-ultra-light: rgba(255, 255, 255, 0.95);
+        --glass-light: rgba(255, 255, 255, 0.85);
+        --glass-medium: rgba(255, 255, 255, 0.75);
+        --glass-strong: rgba(255, 255, 255, 0.65);
+        --glass-border-light: rgba(0, 0, 0, 0.15);
+        --glass-border-medium: rgba(0, 0, 0, 0.1);
+        --separator: rgba(0, 0, 0, 0.15);
+        --separator-light: rgba(0, 0, 0, 0.1);
+        
         /* 調整手機版間距 */
         --spacing-lg: 20px;
         --spacing-xl: 28px;
         --spacing-2xl: 36px;
+    }
+    
+    /* 強化資訊區塊的視覺分隔 */
+    .info-block {
+        background: var(--glass-ultra-light);
+        border: 2px solid var(--glass-border-light);
+        box-shadow: 
+            0 4px 20px rgba(0, 0, 0, 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        margin-bottom: var(--spacing-lg);
+        border-radius: var(--radius-lg);
+    }
+    
+    .upcoming-block {
+        background: linear-gradient(135deg, rgba(0, 122, 255, 0.2) 0%, rgba(52, 199, 89, 0.15) 100%);
+        border: 2px solid rgba(0, 122, 255, 0.3);
+    }
+    
+    /* 強化區塊標題 */
+    .block-header {
+        padding: var(--spacing-lg) var(--spacing-md) var(--spacing-md) var(--spacing-md);
+        background: rgba(0, 0, 0, 0.03);
+        border-bottom: 2px solid var(--separator);
+    }
+    
+    .block-title {
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: var(--text-primary);
+    }
+    
+    /* 強化列表項目分隔 */
+    .list-item {
+        padding: var(--spacing-md);
+        font-size: 0.9375rem;
+        border-bottom: 1px solid var(--separator);
+        background: rgba(255, 255, 255, 0.5);
+    }
+    
+    .list-item:hover {
+        background: rgba(255, 255, 255, 0.8);
+    }
+    
+    .list-item.highlight {
+        background: rgba(0, 122, 255, 0.15);
+        border-left: 4px solid var(--apple-blue);
+        border-bottom: 1px solid rgba(0, 122, 255, 0.2);
+    }
+    
+    .list-item.upcoming {
+        background: rgba(52, 199, 89, 0.15);
+        border-left: 4px solid var(--apple-green);
+        border-bottom: 1px solid rgba(52, 199, 89, 0.2);
+    }
+    
+    /* 強化時間線視覺效果 */
+    .timeline-item {
+        background: var(--glass-ultra-light);
+        border: 2px solid var(--glass-border-light);
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        margin-bottom: var(--spacing-md);
+        border-radius: var(--radius-md);
+    }
+    
+    .timeline-item.today {
+        background: rgba(255, 59, 48, 0.15);
+        border: 2px solid var(--apple-red);
+    }
+    
+    .timeline-item.upcoming {
+        background: rgba(52, 199, 89, 0.15);
+        border: 2px solid var(--apple-green);
+    }
+    
+    .timeline-item.past {
+        background: rgba(0, 0, 0, 0.05);
+        border: 2px solid rgba(0, 0, 0, 0.1);
+        color: var(--text-disabled);
+    }
+    
+    /* 強化班表卡片 */
+    .schedule-row {
+        background: var(--glass-ultra-light);
+        border: 2px solid var(--glass-border-light);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        margin-bottom: var(--spacing-sm);
+        border-radius: var(--radius-sm);
+    }
+    
+    .schedule-row.past {
+        background: rgba(0, 0, 0, 0.05);
+        border: 2px solid rgba(0, 0, 0, 0.1);
+        color: var(--text-disabled);
+    }
+    
+    /* 強化事件項目 */
+    .event-item {
+        background: rgba(255, 255, 255, 0.6);
+        border-bottom: 2px solid var(--separator);
+    }
+    
+    .event-item.today {
+        background: rgba(255, 59, 48, 0.15);
+        border-left: 4px solid var(--apple-red);
+        border-bottom: 2px solid rgba(255, 59, 48, 0.3);
+    }
+    
+    .event-item.upcoming {
+        background: rgba(52, 199, 89, 0.15);
+        border-left: 4px solid var(--apple-green);
+        border-bottom: 2px solid rgba(52, 199, 89, 0.3);
+    }
+    
+    /* 加強容器邊框 */
+    .table-container,
+    .timeline-container,
+    .events-container {
+        background: var(--glass-light);
+        border: 2px solid var(--glass-border-light);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* 強化載入狀態 */
+    .loading-item {
+        background: rgba(0, 122, 255, 0.1);
+        border: 1px solid rgba(0, 122, 255, 0.2);
+        border-radius: var(--radius-sm);
+        margin: var(--spacing-md);
+    }
+    
+    .no-events {
+        background: rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: var(--radius-sm);
+        margin: var(--spacing-md);
     }
     
     .container {
@@ -679,6 +824,9 @@ body::before {
         padding: var(--spacing-lg) var(--spacing-md);
         margin-bottom: var(--spacing-lg);
         border-radius: var(--radius-lg);
+        background: var(--glass-light);
+        border: 2px solid var(--glass-border-light);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
     
     .header h1 {
@@ -689,132 +837,44 @@ body::before {
     /* 分頁按鈕手機優化 */
     .tabs {
         margin-bottom: var(--spacing-lg);
-        padding: 3px;
+        padding: 6px;
         max-width: 100%;
+        background: var(--glass-medium);
+        border: 2px solid var(--glass-border-medium);
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
     }
     
     .tab-button {
         padding: var(--spacing-md) var(--spacing-sm);
         font-size: 0.875rem;
-        min-height: 48px; /* iOS 推薦觸控尺寸 */
-        font-weight: 500;
+        min-height: 48px;
+        font-weight: 600;
+        border-radius: var(--radius-sm);
+    }
+    
+    .tab-button.active {
+        background: var(--glass-ultra-light);
+        border: 1px solid var(--glass-border-light);
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
     }
     
     /* 區段標題調整 */
     .section-header {
         margin-bottom: var(--spacing-lg);
         padding-bottom: var(--spacing-md);
+        border-bottom: 2px solid var(--separator);
     }
     
     .section-title {
         font-size: 1.75rem;
         margin-bottom: var(--spacing-xs);
+        font-weight: 700;
     }
     
     .section-meta {
         flex-direction: column;
         gap: var(--spacing-xs);
         font-size: 0.8125rem;
-    }
-    
-    /* 資訊區塊手機優化 */
-    .info-block {
-        margin-bottom: var(--spacing-lg);
-        border-radius: var(--radius-md);
-    }
-    
-    .block-header {
-        padding: var(--spacing-lg) var(--spacing-md) var(--spacing-md) var(--spacing-md);
-    }
-    
-    .block-title {
-        font-size: 1.125rem;
-    }
-    
-    /* 列表項目手機優化 */
-    .list-item {
-        padding: var(--spacing-md);
-        font-size: 0.9375rem;
-    }
-    
-    .item-title {
-        font-size: 0.9375rem;
-        line-height: 1.3;
-    }
-    
-    .item-details {
-        font-size: 0.875rem;
-        margin-top: var(--spacing-xs);
-    }
-    
-    /* 班表手機版 - 改為卡片式 */
-    .schedule-row {
-        display: block;
-        padding: var(--spacing-md);
-        margin-bottom: var(--spacing-sm);
-        background: var(--glass-ultra-light);
-        border-radius: var(--radius-sm);
-        border: 1px solid var(--glass-border-light);
-    }
-    
-    .schedule-row.header {
-        display: none; /* 隱藏表格標題 */
-    }
-    
-    .schedule-row:last-child {
-        margin-bottom: 0;
-        border-bottom: none;
-    }
-    
-    .schedule-cell {
-        display: block;
-        margin-bottom: var(--spacing-xs);
-        font-size: 0.875rem;
-    }
-    
-    .schedule-cell.date {
-        font-size: 1rem;
-        font-weight: 600;
-        margin-bottom: var(--spacing-sm);
-        color: var(--apple-blue);
-    }
-    
-    .schedule-cell.session {
-        padding: var(--spacing-xs) 0;
-        border-bottom: 1px solid var(--separator-light);
-    }
-    
-    .schedule-cell.session:last-child {
-        border-bottom: none;
-    }
-    
-    /* 時間線手機優化 */
-    .timeline-list {
-        padding-left: var(--spacing-lg);
-    }
-    
-    .timeline-list::before {
-        left: var(--spacing-sm);
-        width: 1px;
-    }
-    
-    .timeline-item {
-        padding: var(--spacing-md);
-        margin-bottom: var(--spacing-md);
-        font-size: 0.9375rem;
-    }
-    
-    .timeline-item::after {
-        left: calc(-var(--spacing-lg) - 4px);
-        width: 8px;
-        height: 8px;
-        top: var(--spacing-md);
-    }
-    
-    /* 事件列表手機優化 */
-    .event-item {
-        padding: var(--spacing-md);
-        font-size: 0.9375rem;
     }
     
     /* 重新整理按鈕手機優化 */
@@ -824,6 +884,9 @@ body::before {
         width: 52px;
         height: 52px;
         font-size: 1.125rem;
+        background: var(--glass-light);
+        border: 2px solid var(--glass-border-light);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
     }
 }
 
