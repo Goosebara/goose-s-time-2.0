@@ -11,98 +11,129 @@
 <body>
     <div class="container">
         <header class="header">
-            <h1>✨ Mr.K's Life Balance</h1>
-            <p>即時同步生活節奏與專業安排</p>
+            <h1>Mr.K's Life Balance</h1>
         </header>
 
         <nav class="tabs" role="tablist">
             <button class="tab-button active" onclick="showTab('overview')" role="tab" aria-selected="true" aria-controls="overview">
-                📊 今日總覽
+                今日總覽
             </button>
             <button class="tab-button" onclick="showTab('schedule')" role="tab" aria-selected="false" aria-controls="schedule">
-                📅 班表
+                班表
             </button>
             <button class="tab-button" onclick="showTab('academic')" role="tab" aria-selected="false" aria-controls="academic">
-                🎓 學術活動
+                學術活動
             </button>
             <button class="tab-button" onclick="showTab('appointments')" role="tab" aria-selected="false" aria-controls="appointments">
-                📋 預排行程
+                預排行程
             </button>
         </nav>
 
         <main>
+            <!-- 今日總覽 - 改為條列式 -->
             <section id="overview" class="tab-content active" role="tabpanel" aria-labelledby="overview-tab">
-                <h2 class="section-title">📊 今日總覽</h2>
-                <div class="data-info">
-                    <strong>今天是：</strong><span id="today-date">載入中...</span> | 
-                    <strong>最後更新：</strong><span id="overview-update-time">載入中...</span>
+                <div class="section-header">
+                    <h2 class="section-title">今日總覽</h2>
+                    <div class="section-meta">
+                        <span class="current-date" id="today-date">載入中...</span>
+                        <span class="update-time">最後更新：<span id="overview-update-time">載入中...</span></span>
+                    </div>
                 </div>
                 
-                <div class="overview-container">
-                    <!-- 今日班表 -->
-                    <article class="overview-section">
-                        <h3 class="overview-title">📅 今日班表</h3>
-                        <div id="today-schedule" class="overview-content">
-                            <div class="loading">載入中...</div>
+                <!-- 今日班表區塊 -->
+                <div class="info-block">
+                    <div class="block-header">
+                        <h3 class="block-title">今日班表</h3>
+                    </div>
+                    <div class="block-content">
+                        <div id="today-schedule" class="list-container">
+                            <div class="loading-item">載入中...</div>
                         </div>
-                    </article>
-                    
-                    <!-- 今日學術活動 -->
-                    <article class="overview-section">
-                        <h3 class="overview-title">🎓 今日學術活動</h3>
-                        <div id="today-academic" class="overview-content">
-                            <div class="loading">載入中...</div>
+                    </div>
+                </div>
+                
+                <!-- 今日學術活動區塊 -->
+                <div class="info-block">
+                    <div class="block-header">
+                        <h3 class="block-title">今日學術活動</h3>
+                    </div>
+                    <div class="block-content">
+                        <div id="today-academic" class="list-container">
+                            <div class="loading-item">載入中...</div>
                         </div>
-                    </article>
-                    
-                    <!-- 今日預排行程 -->
-                    <article class="overview-section">
-                        <h3 class="overview-title">📋 今日預排行程</h3>
-                        <div id="today-appointments" class="overview-content">
-                            <div class="loading">載入中...</div>
+                    </div>
+                </div>
+                
+                <!-- 今日預排行程區塊 -->
+                <div class="info-block">
+                    <div class="block-header">
+                        <h3 class="block-title">今日預排行程</h3>
+                    </div>
+                    <div class="block-content">
+                        <div id="today-appointments" class="list-container">
+                            <div class="loading-item">載入中...</div>
                         </div>
-                    </article>
-                    
-                    <!-- 近期預告 -->
-                    <article class="overview-section upcoming-section">
-                        <h3 class="overview-title">🔮 近期一週預告</h3>
-                        <div id="upcoming-events" class="overview-content">
-                            <div class="loading">載入中...</div>
+                    </div>
+                </div>
+                
+                <!-- 近期預告區塊 -->
+                <div class="info-block upcoming-block">
+                    <div class="block-header">
+                        <h3 class="block-title">近期一週預告</h3>
+                    </div>
+                    <div class="block-content">
+                        <div id="upcoming-events" class="list-container">
+                            <div class="loading-item">載入中...</div>
                         </div>
-                    </article>
+                    </div>
                 </div>
             </section>
 
+            <!-- 班表分頁 - 改為表格式條列 -->
             <section id="schedule" class="tab-content" role="tabpanel" aria-labelledby="schedule-tab">
-                <h2 class="section-title">📅 班表</h2>
-                <div class="data-info">
-                    <strong>資料來源：</strong>Google Spreadsheet - 班表分頁 | 
-                    <strong>最後更新：</strong><span id="schedule-update-time">載入中...</span>
+                <div class="section-header">
+                    <h2 class="section-title">班表</h2>
+                    <div class="section-meta">
+                        <span class="data-source">資料來源：Google Spreadsheet - 班表分頁</span>
+                        <span class="update-time">最後更新：<span id="schedule-update-time">載入中...</span></span>
+                    </div>
                 </div>
-                <div id="schedule-content">
-                    <div class="loading">正在載入班表資料...</div>
+                <div class="table-container">
+                    <div id="schedule-content" class="schedule-table">
+                        <div class="loading-item">正在載入班表資料...</div>
+                    </div>
                 </div>
             </section>
 
+            <!-- 學術活動分頁 - 改為時間線條列 -->
             <section id="academic" class="tab-content" role="tabpanel" aria-labelledby="academic-tab">
-                <h2 class="section-title">🎓 學術活動</h2>
-                <div class="data-info">
-                    <strong>資料來源：</strong>Google Spreadsheet - 學術活動分頁 | 
-                    <strong>最後更新：</strong><span id="academic-update-time">載入中...</span>
+                <div class="section-header">
+                    <h2 class="section-title">學術活動</h2>
+                    <div class="section-meta">
+                        <span class="data-source">資料來源：Google Spreadsheet - 學術活動分頁</span>
+                        <span class="update-time">最後更新：<span id="academic-update-time">載入中...</span></span>
+                    </div>
                 </div>
-                <div id="academic-content">
-                    <div class="loading">正在載入學術活動資料...</div>
+                <div class="timeline-container">
+                    <div id="academic-content" class="timeline-list">
+                        <div class="loading-item">正在載入學術活動資料...</div>
+                    </div>
                 </div>
             </section>
 
+            <!-- 預排行程分頁 - 改為事件條列 -->
             <section id="appointments" class="tab-content" role="tabpanel" aria-labelledby="appointments-tab">
-                <h2 class="section-title">📋 預排行程</h2>
-                <div class="data-info">
-                    <strong>資料來源：</strong>Google Spreadsheet - 預排行程分頁 | 
-                    <strong>最後更新：</strong><span id="appointments-update-time">載入中...</span>
+                <div class="section-header">
+                    <h2 class="section-title">預排行程</h2>
+                    <div class="section-meta">
+                        <span class="data-source">資料來源：Google Spreadsheet - 預排行程分頁</span>
+                        <span class="update-time">最後更新：<span id="appointments-update-time">載入中...</span></span>
+                    </div>
                 </div>
-                <div id="appointments-content">
-                    <div class="loading">正在載入預排行程資料...</div>
+                <div class="events-container">
+                    <div id="appointments-content" class="events-list">
+                        <div class="loading-item">正在載入預排行程資料...</div>
+                    </div>
                 </div>
             </section>
         </main>
