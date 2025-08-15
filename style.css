@@ -758,31 +758,24 @@ body::before {
         color: var(--text-disabled);
     }
     
-    /* 強化班表卡片 */
-    .schedule-row {
+    /* 修正班表卡片樣式（使用正確的 class 名） */
+    .schedule-card {
         background: var(--glass-ultra-light);
         border: 2px solid var(--glass-border-light);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-        margin-bottom: var(--spacing-md); /* 增加間距 */
-        border-radius: var(--radius-md); /* 增加圓角 */
-        padding: var(--spacing-md); /* 增加內邊距 */
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+        margin-bottom: var(--spacing-lg); /* 增加間距 */
+        border-radius: var(--radius-md);
+        padding: var(--spacing-md);
+        display: block; /* 確保為卡片樣式 */
     }
     
-    .schedule-row.past {
+    .schedule-card.past {
         background: rgba(0, 0, 0, 0.05);
         border: 2px solid rgba(0, 0, 0, 0.1);
         color: var(--text-disabled);
     }
     
-    /* 強化班表內容分隔 */
-    .schedule-cell {
-        display: block;
-        margin-bottom: var(--spacing-sm);
-        font-size: 0.875rem;
-        padding: var(--spacing-xs) 0;
-    }
-    
-    .schedule-cell.date {
+    .schedule-card h3 {
         font-size: 1rem;
         font-weight: 700;
         margin-bottom: var(--spacing-md);
@@ -791,21 +784,26 @@ body::before {
         border-bottom: 2px solid var(--separator);
     }
     
-    .schedule-cell.session {
-        background: rgba(255, 255, 255, 0.4);
+    .schedule-card .clinic-session {
+        background: rgba(255, 255, 255, 0.6);
         padding: var(--spacing-sm);
-        margin: var(--spacing-xs) 0;
+        margin: var(--spacing-sm) 0;
         border-radius: var(--radius-xs);
         border: 1px solid var(--separator);
         font-size: 0.8125rem;
     }
     
-    .schedule-cell.session:last-child {
-        margin-bottom: 0;
+    .schedule-card .exception-date {
+        background: rgba(255, 59, 48, 0.15);
+        border: 1px solid rgba(255, 59, 48, 0.4);
+        padding: var(--spacing-sm);
+        margin: var(--spacing-sm) 0;
+        border-radius: var(--radius-xs);
+        font-size: 0.8125rem;
     }
     
-    /* 強化時間線視覺效果 */
-    .timeline-item {
+    /* 修正學術活動樣式（使用正確的 class 名） */
+    .activity-item {
         background: var(--glass-ultra-light);
         border: 2px solid var(--glass-border-light);
         box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
@@ -815,18 +813,34 @@ body::before {
         position: relative;
     }
     
-    /* 時間線項目內容分隔 */
-    .timeline-item .activity-date {
-        background: rgba(0, 122, 255, 0.1);
+    .activity-item.past {
+        background: rgba(0, 0, 0, 0.05);
+        border: 2px solid rgba(0, 0, 0, 0.1);
+        color: var(--text-disabled);
+    }
+    
+    .activity-item.today-marker {
+        background: rgba(255, 59, 48, 0.15);
+        border: 2px solid var(--apple-red);
+    }
+    
+    .activity-item.upcoming {
+        background: rgba(52, 199, 89, 0.15);
+        border: 2px solid var(--apple-green);
+    }
+    
+    .activity-item .activity-date {
+        background: rgba(0, 122, 255, 0.15);
         padding: var(--spacing-xs) var(--spacing-sm);
         border-radius: var(--radius-xs);
         font-size: 0.75rem;
         font-weight: 600;
         margin-bottom: var(--spacing-sm);
         display: inline-block;
+        color: var(--apple-blue);
     }
     
-    .timeline-item .activity-title {
+    .activity-item .activity-title {
         font-size: 0.9375rem;
         font-weight: 600;
         margin-bottom: var(--spacing-sm);
@@ -835,12 +849,12 @@ body::before {
         padding-bottom: var(--spacing-xs);
     }
     
-    .timeline-item .activity-details {
+    .activity-item .activity-details {
         font-size: 0.8125rem;
         color: var(--text-secondary);
     }
     
-    .timeline-item .activity-details span {
+    .activity-item .activity-details span {
         background: rgba(255, 255, 255, 0.6);
         padding: 2px var(--spacing-xs);
         border-radius: var(--radius-xs);
@@ -848,6 +862,24 @@ body::before {
         margin-bottom: var(--spacing-xs);
         display: inline-block;
         border: 1px solid var(--separator-light);
+    }
+    
+    /* 移除時間線的點狀標記（因為使用卡片式） */
+    .activity-timeline::before {
+        display: none;
+    }
+    
+    .activity-item::after {
+        display: none;
+    }
+    
+    /* 確保容器樣式 */
+    .schedule-grid {
+        display: block; /* 在手機上改為單欄 */
+    }
+    
+    .activity-timeline {
+        padding-left: 0; /* 移除左邊距 */
     }
     
     /* 強化即將到來項目 */
