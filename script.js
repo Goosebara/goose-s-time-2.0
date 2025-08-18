@@ -222,42 +222,47 @@ const SPREADSHEET_ID = '1VScB4K-05GBe8p6hcWRyE2vCVRG-x4rmWfCigixPZNg';
         }
 
         // 渲染近期預告
-        function renderUpcomingEvents() {
-            let html = '';
-            const upcomingAcademic = getUpcomingEvents(academicData, 1); // 學術活動從B欄位取日期
-            const upcomingAppointments = getUpcomingEvents(appointmentsData, 0); // 預排行程從A欄位取日期
+        // 渲染近期預告
+function renderUpcomingEvents() {
+    let html = '';
+    const upcomingAcademic = getUpcomingEvents(academicData, 1);
+    const upcomingAppointments = getUpcomingEvents(appointmentsData, 0);
 
-            if (upcomingAcademic.length > 0) {
-                html += '<h4 style="color: #78c8ff; margin-bottom: 12px;">🎓 即將到來的學術活動</h4>';
-                upcomingAcademic.forEach(event => {
-                    html += `
-                        <div class="upcoming-item">
-                            <div class="upcoming-date">📅 ${event.date}</div>
-                            <strong>${event.title}</strong>
-                            ${event.details ? `<br><small>${event.details}</small>` : ''}
-                        </div>
-                    `;
-                });
-            }
+    if (upcomingAcademic.length > 0) {
+        html += '<div class="upcoming-section">';
+        html += '<div class="upcoming-section-title">🎓 即將到來的學術活動</div>';
+        upcomingAcademic.forEach(event => {
+            html += `
+                <div class="upcoming-item">
+                    <div class="upcoming-date">${event.date}</div>
+                    <div class="upcoming-title">${event.title}</div>
+                    ${event.details ? `<div class="upcoming-details"><span class="upcoming-location">${event.details}</span></div>` : ''}
+                </div>
+            `;
+        });
+        html += '</div>';
+    }
 
-            if (upcomingAppointments.length > 0) {
-                html += '<h4 style="color: #78c8ff; margin-bottom: 12px; margin-top: 20px;">📋 即將到來的預排行程</h4>';
-                upcomingAppointments.forEach(event => {
-                    html += `
-                        <div class="upcoming-item">
-                            <div class="upcoming-date">📅 ${event.date}</div>
-                            <strong>${event.title}</strong>
-                        </div>
-                    `;
-                });
-            }
+    if (upcomingAppointments.length > 0) {
+        html += '<div class="upcoming-section">';
+        html += '<div class="upcoming-section-title">📋 即將到來的預排行程</div>';
+        upcomingAppointments.forEach(event => {
+            html += `
+                <div class="upcoming-item">
+                    <div class="upcoming-date">${event.date}</div>
+                    <div class="upcoming-title">${event.title}</div>
+                </div>
+            `;
+        });
+        html += '</div>';
+    }
 
-            if (upcomingAcademic.length === 0 && upcomingAppointments.length === 0) {
-                html = '<div class="no-events">近期一週無特別安排</div>';
-            }
+    if (upcomingAcademic.length === 0 && upcomingAppointments.length === 0) {
+        html = '<div class="no-events">近期一週無特別安排</div>';
+    }
 
-            document.getElementById('upcoming-events').innerHTML = html;
-        }
+    document.getElementById('upcoming-events').innerHTML = html;
+}
 
         // 取得即將到來的事件
         function getUpcomingEvents(data, dateColumnIndex) {
@@ -538,4 +543,5 @@ function renderAppointments(data) {
         document.addEventListener('DOMContentLoaded', function() {
             loadAllData();
         });
+
 
