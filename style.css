@@ -817,6 +817,148 @@ body::before {
     font-weight: 500;
 }
 
+/* ===== 今日總覽各區塊內容優化 ===== */
+.today-item {
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-md);
+    margin: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--separator-light);
+    transition: all var(--transition-fast);
+    line-height: 1.5;
+}
+
+.today-item:first-child {
+    margin-top: var(--spacing-md);
+}
+
+.today-item:last-child {
+    margin-bottom: var(--spacing-md);
+}
+
+.today-item:hover {
+    background: rgba(255, 255, 255, 0.9);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.today-item.highlight {
+    background: rgba(0, 122, 255, 0.15);
+    border: 1px solid rgba(0, 122, 255, 0.3);
+    border-left: 4px solid var(--apple-blue);
+}
+
+/* 班表項目樣式 */
+.schedule-info {
+    margin-bottom: var(--spacing-sm);
+}
+
+.schedule-info:last-child {
+    margin-bottom: 0;
+}
+
+.schedule-date {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--apple-blue);
+    margin-bottom: var(--spacing-xs);
+}
+
+.schedule-session {
+    background: rgba(255, 255, 255, 0.8);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-xs);
+    margin: var(--spacing-xs) 0;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    border: 1px solid var(--separator-light);
+}
+
+.schedule-exception {
+    background: rgba(255, 59, 48, 0.15);
+    color: var(--apple-red);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-xs);
+    margin: var(--spacing-xs) 0;
+    font-size: 0.8125rem;
+    border: 1px solid rgba(255, 59, 48, 0.3);
+    font-weight: 500;
+}
+
+/* 學術活動項目樣式 */
+.academic-info {
+    margin-bottom: var(--spacing-sm);
+}
+
+.academic-info:last-child {
+    margin-bottom: 0;
+}
+
+.academic-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-xs);
+    line-height: 1.4;
+}
+
+.academic-time {
+    display: inline-block;
+    background: var(--apple-purple);
+    color: white;
+    padding: 2px var(--spacing-xs);
+    border-radius: var(--radius-xs);
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-xs);
+}
+
+.academic-location {
+    background: rgba(255, 149, 0, 0.15);
+    color: var(--apple-orange);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-xs);
+    font-size: 0.8125rem;
+    margin: var(--spacing-xs) 0;
+    border: 1px solid rgba(255, 149, 0, 0.3);
+}
+
+.academic-speaker {
+    background: rgba(175, 82, 222, 0.15);
+    color: var(--apple-purple);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-xs);
+    font-size: 0.8125rem;
+    margin: var(--spacing-xs) 0;
+    border: 1px solid rgba(175, 82, 222, 0.3);
+}
+
+/* 預排行程項目樣式 */
+.appointment-info {
+    margin-bottom: var(--spacing-sm);
+}
+
+.appointment-info:last-child {
+    margin-bottom: 0;
+}
+
+.appointment-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-xs);
+}
+
+.appointment-date {
+    background: rgba(52, 199, 89, 0.15);
+    color: var(--apple-green);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-xs);
+    font-size: 0.8125rem;
+    border: 1px solid rgba(52, 199, 89, 0.3);
+    font-weight: 500;
+}
+
 
 /* ===== 手機版固定頂部優化 ===== */
 @media (max-width: 767px) {
@@ -1266,6 +1408,72 @@ body::before {
     font-size: 0.8125rem;
 }
 
+
+ /* 手機版今日總覽區塊優化 */
+.today-item {
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 0;
+    padding: var(--spacing-md);
+    margin: 0;
+    border: none;
+    border-bottom: 1px solid var(--separator);
+}
+
+.today-item:hover {
+    background: rgba(255, 255, 255, 0.8);
+    transform: none;
+    box-shadow: none;
+}
+
+.today-item.highlight {
+    background: rgba(0, 122, 255, 0.15);
+    border-left: 4px solid var(--apple-blue);
+    border-bottom: 1px solid rgba(0, 122, 255, 0.2);
+}
+
+.schedule-date {
+    font-size: 0.9375rem;
+}
+
+.schedule-session {
+    background: rgba(255, 255, 255, 0.8);
+    padding: var(--spacing-xs);
+    margin: var(--spacing-xs) 0;
+    font-size: 0.8125rem;
+    border-radius: var(--radius-xs);
+}
+
+.schedule-exception {
+    padding: var(--spacing-xs);
+    margin: var(--spacing-xs) 0;
+    font-size: 0.75rem;
+}
+
+.academic-title {
+    font-size: 0.9375rem;
+}
+
+.academic-time {
+    font-size: 0.7rem;
+    padding: 1px var(--spacing-xs);
+}
+
+.academic-location,
+.academic-speaker {
+    padding: var(--spacing-xs);
+    margin: var(--spacing-xs) 0;
+    font-size: 0.75rem;
+}
+
+.appointment-title {
+    font-size: 0.9375rem;
+}
+
+.appointment-date {
+    padding: var(--spacing-xs);
+    font-size: 0.75rem;
+}   
+    
     
     /* 強化事件項目 */
     .event-item {
@@ -1613,6 +1821,7 @@ body::before {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--glass-strong);
 }
+
 
 
 
