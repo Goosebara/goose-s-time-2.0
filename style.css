@@ -707,6 +707,44 @@ body::before {
     }
 }
 
+/* ===== 今日總覽格子化佈局 ===== */
+.overview-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-2xl);
+}
+
+/* 桌面版 2x2 格子佈局 */
+@media (min-width: 768px) {
+    .overview-container {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--spacing-xl);
+    }
+    
+    .overview-section {
+        min-height: 200px;
+    }
+    
+    /* 近期預告佔滿整行 */
+    .overview-section.upcoming-block {
+        grid-column: 1 / -1;
+        min-height: 150px;
+    }
+}
+
+/* 大螢幕優化 */
+@media (min-width: 1200px) {
+    .overview-container {
+        gap: var(--spacing-2xl);
+    }
+    
+    .overview-section {
+        min-height: 220px;
+    }
+}
+
+
 /* ===== 手機版固定頂部優化 ===== */
 @media (max-width: 767px) {
     /* 固定頂部調整 */
@@ -975,8 +1013,10 @@ body::before {
     
     /* 今日總覽頁面強化 */
     .overview-container {
-        display: block; /* 手機版改為單欄 */
-        gap: var(--spacing-lg);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
     }
     
     .overview-section {
@@ -1453,4 +1493,5 @@ body::before {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--glass-strong);
 }
+
 
