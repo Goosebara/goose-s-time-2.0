@@ -102,126 +102,121 @@ const SPREADSHEET_ID = '1VScB4K-05GBe8p6hcWRyE2vCVRG-x4rmWfCigixPZNg';
         }
 
         // 渲染今日班表
-        function renderTodaySchedule() {
-            if (!scheduleData) {
-                document.getElementById('today-schedule').innerHTML = '<div class="no-events">班表資料載入中...</div>';
-                return;
+function renderTodaySchedule() {
+    if (!scheduleData) {
+        document.getElementById('today-schedule').innerHTML = '<div class="loading-item">班表資料載入中...</div>';
+        return;
+    }
+
+    const todayWeekday = getTodayWeekday();
+    let html = '';
+    let found = false;
+
+    const rows = scheduleData.slice(1);
+    rows.forEach(row => {
+        if (row[1] === todayWeekday) {
+            found = true;
+            const cleanSession1 = row[2] ? row[2].replace(/診次一[：:]\s*/g, '') : '';
+            const cleanSession2 = row[3] ? row[3].replace(/診次二[：:]\s*/g, '') : '';
+            const cleanSession3 = row[4] ? row[4].replace(/診次三[：:]\s*/g, '') : '';
+
+            html += '<div class="today-item highlight">';
+            html += `<div class="schedule-date">📅 ${row[0]} ${row[1]}</div>`;
+            if (cleanSession1) html += `<div class="schedule-session">🏥 ${cleanSession1}</div>`;
+            if (cleanSession2) html += `<div class="schedule-session">🏥 ${cleanSession2}</div>`;
+            if (cleanSession3) html += `<div class="schedule-session">🏥 ${cleanSession3}</div>`;
+
+            // 檢查例外日期
+            const todayDateString = getTodayString();
+            if ((row[5] && row[5].includes(todayDateString.slice(-5))) || 
+                (row[6] && row[6].includes(todayDateString.slice(-5)))) {
+                html += '<div class="schedule-exception">🚫 今日不上診 (例外日期)</div>';
             }
-
-            const todayWeekday = getTodayWeekday();
-            let html = '';
-            let found = false;
-
-            const rows = scheduleData.slice(1);
-            rows.forEach(row => {
-                if (row[1] === todayWeekday) {
-                    found = true;
-                    const cleanSession1 = row[2] ? row[2].replace(/診次一[：:]\s*/g, '') : '';
-                    const cleanSession2 = row[3] ? row[3].replace(/診次二[：:]\s*/g, '') : '';
-                    const cleanSession3 = row[4] ? row[4].replace(/診次三[：:]\s*/g, '') : '';
-
-                    html += '<div class="today-item highlight">';
-                    html += `<strong>📅 ${row[0]} ${row[1]}</strong><br>`;
-                    if (cleanSession1) html += `🏥 ${cleanSession1}<br>`;
-                    if (cleanSession2) html += `🏥 ${cleanSession2}<br>`;
-                    if (cleanSession3) html += `🏥 ${cleanSession3}<br>`;
-                    html += '</div>';
-
-                    // 檢查例外日期
-                    const todayDateString = getTodayString();
-                    if ((row[5] && row[5].includes(todayDateString.slice(-5))) || 
-                        (row[6] && row[6].includes(todayDateString.slice(-5)))) {
-                        html += '<div class="today-item" style="background: rgba(255, 107, 107, 0.3);">';
-                        html += '🚫 <strong>今日不上診</strong> (例外日期)';
-                        html += '</div>';
-                    }
-                }
-            });
-
-            if (!found) {
-                html = '<div class="no-events">今日無排班資訊</div>';
-            }
-
-            document.getElementById('today-schedule').innerHTML = html;
+            html += '</div>';
         }
+    });
+
+    if (!found) {
+        html = '<div class="no-events">今日無排班資訊</div>';
+    }
+
+    document.getElementById('today-schedule').innerHTML = html;
+}
 
         // 渲染今日學術活動
-        function renderTodayAcademic() {
-            if (!academicData) {
-                document.getElementById('today-academic').innerHTML = '<div class="no-events">學術活動資料載入中...</div>';
-                return;
-            }
+function renderTodayAcademic() {
+    if (!academicData) {
+        document.getElementById('today-academic').innerHTML = '<div class="loading-item">學術活動資料載入中...</div>';
+        return;
+    }
 
-            const todayString = getTodayString(); // 114/08/12
-            const todayStringWithZero = '0' + todayString; // 0114/08/12
-            let html = '';
-            let found = false;
+    const todayString = getTodayString();
+    const todayStringWithZero = '0' + todayString;
+    let html = '';
+    let found = false;
 
-            const rows = academicData.slice(1);
-            rows.forEach(row => {
-                // 比對兩種格式
-                if (row[1] === todayString || row[1] === todayStringWithZero) {
-                    found = true;
-                    const time = row[2] || '';
-                    const title = row[3] || '未命名活動';
-                    const location = row[4] || '';
-                    const speaker = row[5] || '';
+    const rows = academicData.slice(1);
+    rows.forEach(row => {
+        if (row[1] === todayString || row[1] === todayStringWithZero) {
+            found = true;
+            const time = row[2] || '';
+            const title = row[3] || '未命名活動';
+            const location = row[4] || '';
+            const speaker = row[5] || '';
 
-                    html += '<div class="today-item highlight">';
-                    html += `<strong>🎓 ${title}</strong><br>`;
-                    if (time) html += `⏰ ${time}<br>`;
-                    if (location) html += `📍 ${location}<br>`;
-                    if (speaker) html += `🎤 ${speaker}`;
-                    html += '</div>';
-                }
-            });
-
-            if (!found) {
-                html = '<div class="no-events">今日無學術活動安排</div>';
-            }
-
-            document.getElementById('today-academic').innerHTML = html;
+            html += '<div class="today-item highlight">';
+            html += `<div class="academic-title">🎓 ${title}</div>`;
+            if (time) html += `<div class="academic-time">${time}</div>`;
+            if (location) html += `<div class="academic-location">📍 ${location}</div>`;
+            if (speaker) html += `<div class="academic-speaker">🎤 ${speaker}</div>`;
+            html += '</div>';
         }
+    });
 
-        // 渲染今日預排行程
-        function renderTodayAppointments() {
-            if (!appointmentsData) {
-                document.getElementById('today-appointments').innerHTML = '<div class="no-events">預排行程資料載入中...</div>';
-                return;
+    if (!found) {
+        html = '<div class="no-events">今日無學術活動安排</div>';
+    }
+
+    document.getElementById('today-academic').innerHTML = html;
+}
+
+function renderTodayAppointments() {
+    if (!appointmentsData) {
+        document.getElementById('today-appointments').innerHTML = '<div class="loading-item">預排行程資料載入中...</div>';
+        return;
+    }
+
+    const todayString = getTodayString();
+    let html = '';
+    let found = false;
+
+    const rows = appointmentsData.slice(1);
+    rows.forEach(row => {
+        if (row[0] === todayString || 
+            (row[1] && parseDate(row[0]) <= new Date() && parseDate(row[1]) >= new Date())) {
+            found = true;
+            const startDate = row[0] || '';
+            const endDate = row[1] || '';
+            const location = row[2] || '';
+
+            html += '<div class="today-item highlight">';
+            html += `<div class="appointment-title">📋 ${location || '預排行程'}</div>`;
+            if (endDate && endDate !== startDate) {
+                html += `<div class="appointment-date">📅 ${startDate} ~ ${endDate}</div>`;
+            } else {
+                html += `<div class="appointment-date">📅 ${startDate}</div>`;
             }
-
-            const todayString = getTodayString();
-            let html = '';
-            let found = false;
-
-            const rows = appointmentsData.slice(1);
-            rows.forEach(row => {
-                if (row[0] === todayString || 
-                    (row[1] && parseDate(row[0]) <= new Date() && parseDate(row[1]) >= new Date())) {
-                    found = true;
-                    const startDate = row[0] || '';
-                    const endDate = row[1] || '';
-                    const location = row[2] || '';
-
-                    html += '<div class="today-item highlight">';
-                    html += `<strong>📋 ${location || '預排行程'}</strong><br>`;
-                    if (endDate && endDate !== startDate) {
-                        html += `📅 ${startDate} ~ ${endDate}`;
-                    } else {
-                        html += `📅 ${startDate}`;
-                    }
-                    html += '</div>';
-                }
-            });
-
-            if (!found) {
-                html = '<div class="no-events">今日無預排行程</div>';
-            }
-
-            document.getElementById('today-appointments').innerHTML = html;
+            html += '</div>';
         }
+    });
 
-        // 渲染近期預告
+    if (!found) {
+        html = '<div class="no-events">今日無預排行程</div>';
+    }
+
+    document.getElementById('today-appointments').innerHTML = html;
+}
+
         // 渲染近期預告
 function renderUpcomingEvents() {
     let html = '';
@@ -543,5 +538,6 @@ function renderAppointments(data) {
         document.addEventListener('DOMContentLoaded', function() {
             loadAllData();
         });
+
 
 
