@@ -351,13 +351,20 @@ function renderTodaySchedule() {
         return;
     }
 
+    const today = new Date();
     const todayWeekday = getTodayWeekday();
+    const currentMonth = today.getMonth(); // 0-11
+    const monthNames = ['一月', '二月', '三月', '四月', '五月', '六月', 
+                       '七月', '八月', '九月', '十月', '十一月', '十二月'];
+    const currentMonthName = monthNames[currentMonth];
+    
     let html = '';
     let found = false;
 
     const rows = scheduleData.slice(1);
     rows.forEach(row => {
-        if (row[1] === todayWeekday) {
+        // 同時檢查月份和星期
+        if (row[0] === currentMonthName && row[1] === todayWeekday) {
             found = true;
             const cleanSession1 = row[2] ? row[2].replace(/診次一[：:]\s*/g, '') : '';
             const cleanSession2 = row[3] ? row[3].replace(/診次二[：:]\s*/g, '') : '';
@@ -719,4 +726,5 @@ async function loadAllData() {
 document.addEventListener('DOMContentLoaded', function() {
     loadAllData();
 });
+
 
