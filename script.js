@@ -46,6 +46,65 @@ function changeMonth(direction) {
     renderScheduleCalendar(scheduleData);
 }
 
+// 中文月份轉數字
+function chineseMonthToNumber(monthStr) {
+    const monthMap = {
+        '一月': 0, '二月': 1, '三月': 2, '四月': 3, '五月': 4, '六月': 5,
+        '七月': 6, '八月': 7, '九月': 8, '十月': 9, '十一月': 10, '十二月': 11
+    };
+    return monthMap[monthStr] !== undefined ? monthMap[monthStr] : -1;
+}
+
+// 解析例外日期
+function parseExceptionDate(dateStr) {
+    if (!dateStr) return null;
+    
+    // 處理 2025/8/9 或 8/9 格式
+    let parts;
+    if (dateStr.includes('/')) {
+        parts = dateStr.split('/');
+        if (parts.length === 3) {
+            // 2025/8/9 格式
+            return new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+        } else if (parts.length === 2) {
+            // 8/9 格式，假設是當年
+            return new Date(new Date().getFullYear(), parseInt(parts[0]) - 1, parseInt(parts[1]));
+        }
+    }
+    return null;
+}
+
+// 解析例外日期的班別資訊
+function parseExceptionShift(exceptionStr) {
+    if (!exceptionStr) return null;
+    
+    // 例如："2025/9/9 只有早診" 或 "9/26 全日上班"
+    const parts = exceptionStr.split(' ');
+    if (parts.length >= 2) {
+        const shiftInfo = parts.slice(1).join(' ');
+        
+        if (shiftInfo.includes('只有早診') || shiftInfo.includes('早診')) {
+            return { code: '早', class: 'shift-morning' };
+        } else if (shiftInfo.includes('只有午診') || shiftInfo.includes('午診')) {
+            return { code: '午', class: 'shift-afternoon' };
+        } else if (shiftInfo.includes('只有晚診') || shiftInfo.includes('晚診')) {
+            return { code: '晚', class: 'shift-evening' };
+        } else if (shiftInfo.includes('早午診')) {
+            return { code: 'A', class: 'shift-A' };
+        } else if (shiftInfo.includes('午晚診')) {
+            return { code: 'B', class: 'shift-B' };
+        } else if (shiftInfo.includes('早晚診')) {
+            return { code: 'C', class: 'shift-C' };
+        } else if (shiftInfo.includes('全日') || shiftInfo.includes('全天')) {
+            return { code: '全', class: 'shift-full' };
+        } else if (shiftInfo.includes('休假') || shiftInfo.includes('不上診')) {
+            return { code: '休', class: 'shift-off' };
+        }
+    }
+    
+    return { code: '特', class: 'shift-other' };
+}
+
 // 日期比較函數
 function parseDate(dateStr) {
     if (!dateStr) return null;
@@ -127,6 +186,122 @@ function getShiftCode(session1, session2, session3) {
     }
     
     return { code: '其', class: 'shift-other' };
+}
+
+// 新的月曆渲染函數
+function renderScheduleCalendar(data) {
+    if (!data || data.length <= 1) {
+        document.getElementById('schedule-content').innerHTML = '<div class="error">無法載入班表資料或資料為空</div>';
+        return;
+    }
+
+    // 更新月份標題
+    const monthNames = ['一月', '二月', '三月', '四月', '五月', '六月', 
+                       '七月', '八月', '九月', '十月', '十一月', '十二月'];
+    document.getElementById('current-month').textContent = 
+        `${currentCalendarYear}年 ${monthNames[currentCalendarMonth]}`;
+
+    // 建立班表映射 - 按月份+星期分組
+    const scheduleMap = new Map();
+    const exceptionMap = new Map(); // 儲存例外日期
+    
+    const currentMonthName = monthNames[currentCalendarMonth];
+    
+    const rows = data.slice(1);
+    rows.forEach(row => {
+        if (row[0] && row[1]) { // 確保有月份和星期
+            const monthStr = row[0]; // 八月、九月
+            const weekday = row[1];  // 星期一、星期二
+            const session1 = row[2] || '';
+            const session2 = row[3] || '';
+            const session3 = row[4] || '';
+            
+            // 只處理當前月份的資料
+            if (monthStr === currentMonthName) {
+                scheduleMap.set(weekday, {
+                    month: monthStr,
+                    sessions: [session1, session2, session3],
+                    shift: getShiftCode(session1, session2, session3)
+                });
+            }
+            
+            // 處理例外日期（所有月份的例外都要檢查）
+            if (row[5]) { // F欄例外日期一
+                const exceptionDate = parseExceptionDate(row[5]);
+                if (exceptionDate) {
+                    const key = `${exceptionDate.getFullYear()}-${exceptionDate.getMonth()}-${exceptionDate.getDate()}`;
+                    exceptionMap.set(key, parseExceptionShift(row[5]));
+                }
+            }
+            if (row[6]) { // G欄例外日期二
+                const exceptionDate = parseExceptionDate(row[6]);
+                if (exceptionDate) {
+                    const key = `${exceptionDate.getFullYear()}-${exceptionDate.getMonth()}-${exceptionDate.getDate()}`;
+                    exceptionMap.set(key, parseExceptionShift(row[6]));
+                }
+            }
+        }
+    });
+
+    // 生成月曆HTML
+    let html = '<div class="calendar-header">';
+    const weekdays = ['週日', '週一', '週二', '週三', '週四', '週五', '週六'];
+    weekdays.forEach(day => {
+        html += `<div class="calendar-weekday">${day}</div>`;
+    });
+    html += '</div>';
+
+    // 計算月曆天數
+    const firstDay = new Date(currentCalendarYear, currentCalendarMonth, 1);
+    const startDate = new Date(firstDay);
+    startDate.setDate(startDate.getDate() - firstDay.getDay());
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // 生成42天的格子（6週）
+    for (let i = 0; i < 42; i++) {
+        const currentDate = new Date(startDate);
+        currentDate.setDate(startDate.getDate() + i);
+        
+        const isCurrentMonth = currentDate.getMonth() === currentCalendarMonth;
+        const isToday = currentDate.getTime() === today.getTime();
+        
+        // 檢查是否有例外日期
+        const exceptionKey = `${currentDate.getFullYear()}-${currentDate.getMonth()}-${currentDate.getDate()}`;
+        const exceptionShift = exceptionMap.get(exceptionKey);
+        
+        let dayClass = 'calendar-day';
+        if (!isCurrentMonth) dayClass += ' other-month';
+        if (isToday) dayClass += ' today';
+        if (exceptionShift) dayClass += ' has-exception';
+
+        html += `<div class="${dayClass}">`;
+        html += `<div class="day-number">${currentDate.getDate()}</div>`;
+        
+        if (isCurrentMonth) {
+            if (exceptionShift) {
+                // 顯示例外日期的班別
+                html += `<div class="shift-code ${exceptionShift.class}">${exceptionShift.code}</div>`;
+            } else {
+                // 顯示正常班表
+                const weekdayNames = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+                const weekdayName = weekdayNames[currentDate.getDay()];
+                
+                if (scheduleMap.has(weekdayName)) {
+                    const schedule = scheduleMap.get(weekdayName);
+                    html += `<div class="shift-code ${schedule.shift.class}">${schedule.shift.code}</div>`;
+                } else {
+                    // 沒有設定班表的日子顯示休假
+                    html += '<div class="shift-code shift-off">休</div>';
+                }
+            }
+        }
+        
+        html += '</div>';
+    }
+
+    document.getElementById('schedule-content').innerHTML = html;
 }
 
 // 渲染今日總覽
@@ -384,105 +559,6 @@ async function loadSheetData(sheetName, gid) {
         console.error(`載入 ${sheetName} 資料時發生錯誤:`, error);
         return null;
     }
-}
-
-// 新的月曆渲染函數
-function renderScheduleCalendar(data) {
-    if (!data || data.length <= 1) {
-        document.getElementById('schedule-content').innerHTML = '<div class="error">無法載入班表資料或資料為空</div>';
-        return;
-    }
-
-    // 更新月份標題
-    const monthNames = ['一月', '二月', '三月', '四月', '五月', '六月', 
-                       '七月', '八月', '九月', '十月', '十一月', '十二月'];
-    document.getElementById('current-month').textContent = 
-        `${currentCalendarYear}年 ${monthNames[currentCalendarMonth]}`;
-
-    // 建立日期到班表的映射
-    const scheduleMap = new Map();
-    const exceptionMap = new Map();
-    
-    const rows = data.slice(1);
-    rows.forEach(row => {
-        if (row[0] && row[1]) { // 確保有月份和星期
-            const monthStr = row[0];
-            const weekday = row[1];
-            const session1 = row[2] ? row[2].replace(/診次一[：:]\s*/g, '') : '';
-            const session2 = row[3] ? row[3].replace(/診次二[：:]\s*/g, '') : '';
-            const session3 = row[4] ? row[4].replace(/診次三[：:]\s*/g, '') : '';
-            
-            // 儲存班表資料
-            scheduleMap.set(weekday, {
-                month: monthStr,
-                sessions: [session1, session2, session3],
-                shift: getShiftCode(session1, session2, session3)
-            });
-            
-            // 處理例外日期
-            if (row[5]) exceptionMap.set(row[5], true);
-            if (row[6]) exceptionMap.set(row[6], true);
-        }
-    });
-
-    // 生成月曆HTML
-    let html = '<div class="calendar-header">';
-    const weekdays = ['週日', '週一', '週二', '週三', '週四', '週五', '週六'];
-    weekdays.forEach(day => {
-        html += `<div class="calendar-weekday">${day}</div>`;
-    });
-    html += '</div>';
-
-    // 計算月曆天數
-    const firstDay = new Date(currentCalendarYear, currentCalendarMonth, 1);
-    const lastDay = new Date(currentCalendarYear, currentCalendarMonth + 1, 0);
-    const startDate = new Date(firstDay);
-    startDate.setDate(startDate.getDate() - firstDay.getDay());
-
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    // 生成42天的格子（6週）
-    for (let i = 0; i < 42; i++) {
-        const currentDate = new Date(startDate);
-        currentDate.setDate(startDate.getDate() + i);
-        
-        const isCurrentMonth = currentDate.getMonth() === currentCalendarMonth;
-        const isToday = currentDate.getTime() === today.getTime();
-        
-        // 格式化日期字串用於查找例外
-        const year = currentDate.getFullYear() - 1911;
-        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-        const day = String(currentDate.getDate()).padStart(2, '0');
-        const dateStr = `${month}/${day}`;
-        
-        const hasException = exceptionMap.has(dateStr);
-        
-        let dayClass = 'calendar-day';
-        if (!isCurrentMonth) dayClass += ' other-month';
-        if (isToday) dayClass += ' today';
-        if (hasException) dayClass += ' has-exception';
-
-        html += `<div class="${dayClass}">`;
-        html += `<div class="day-number">${currentDate.getDate()}</div>`;
-        
-        if (isCurrentMonth && !hasException) {
-            const weekdayNames = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
-            const weekdayName = weekdayNames[currentDate.getDay()];
-            
-            if (scheduleMap.has(weekdayName)) {
-                const schedule = scheduleMap.get(weekdayName);
-                html += `<div class="shift-code ${schedule.shift.class}">${schedule.shift.code}</div>`;
-            }
-        } else if (hasException) {
-            html += '<div class="exception-indicator"></div>';
-            html += '<div class="shift-code shift-off">休</div>';
-        }
-        
-        html += '</div>';
-    }
-
-    document.getElementById('schedule-content').innerHTML = html;
 }
 
 // 修改原本的 renderSchedule 函數
