@@ -506,7 +506,7 @@ body::before {
     display: none;
 }
 
-.timeline-item {
+.activity-item {
     background: var(--glass-ultra-light);
     backdrop-filter: blur(25px) saturate(180%);
     border-radius: var(--radius-lg);
@@ -518,7 +518,7 @@ body::before {
     transition: all var(--transition-smooth);
 }
 
-.timeline-item::before {
+.activity-item::before {
     content: '';
     position: absolute;
     top: 0;
@@ -529,34 +529,34 @@ body::before {
 }
 
 /* 移除圓點 */
-.timeline-item::after {
+.activity-item::after {
     display: none;
 }
 
-.timeline-item:hover {
+.activity-item:hover {
     transform: translateY(-2px); /* 改為垂直懸浮效果 */
     background: var(--glass-ultra-light);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
-.timeline-item.past {
+.activity-item.past {
     background: rgba(0, 0, 0, 0.05);
     border: 2px solid rgba(0, 0, 0, 0.1);
     color: var(--text-disabled);
 }
 
-.timeline-item.today-marker {
+.activity-item.today-marker {
     background: rgba(255, 59, 48, 0.15);
     border: 2px solid var(--apple-red);
 }
 
-.timeline-item.upcoming {
+.activity-item.upcoming {
     background: rgba(52, 199, 89, 0.15);
     border: 2px solid var(--apple-green);
 }
 
 /* 學術活動內容樣式 */
-.timeline-item .activity-date {
+.activity-item .activity-date {
     background: rgba(0, 122, 255, 0.15);
     padding: var(--spacing-xs) var(--spacing-sm);
     border-radius: var(--radius-xs);
@@ -567,7 +567,7 @@ body::before {
     color: var(--apple-blue);
 }
 
-.timeline-item .activity-title {
+.activity-item .activity-title {
     font-size: 1.125rem;
     font-weight: 600;
     margin-bottom: var(--spacing-sm);
@@ -576,12 +576,12 @@ body::before {
     padding-bottom: var(--spacing-xs);
 }
 
-.timeline-item .activity-details {
+.activity-item .activity-details {
     font-size: 0.9375rem;
     color: var(--text-secondary);
 }
 
-.timeline-item .activity-details span {
+.activity-item .activity-details span {
     background: rgba(255, 255, 255, 0.6);
     padding: var(--spacing-xs) var(--spacing-sm);
     border-radius: var(--radius-xs);
@@ -2123,6 +2123,7 @@ body::before {
         grid-template-columns: 1fr;
     }
 }
+
 
 
 
