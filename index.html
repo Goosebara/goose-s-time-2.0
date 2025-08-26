@@ -102,20 +102,44 @@
 </section>
 
             <!-- 班表分頁 - 改為表格式條列 -->
-            <section id="schedule" class="tab-content" role="tabpanel" aria-labelledby="schedule-tab">
-                <div class="section-header">
-                    <h2 class="section-title">班表</h2>
-                    <div class="section-meta">
-                        <span class="data-source">資料來源：Google Spreadsheet - 班表分頁</span>
-                        <span class="update-time">最後更新：<span id="schedule-update-time">載入中...</span></span>
-                    </div>
-                </div>
-                <div class="table-container">
-                    <div id="schedule-content" class="schedule-table">
-                        <div class="loading-item">正在載入班表資料...</div>
-                    </div>
-                </div>
-            </section>
+<section id="schedule" class="tab-content" role="tabpanel" aria-labelledby="schedule-tab">
+    <div class="section-header">
+        <h2 class="section-title">班表</h2>
+        <div class="section-meta">
+            <span class="data-source">資料來源：Google Spreadsheet - 班表分頁</span>
+            <span class="update-time">最後更新：<span id="schedule-update-time">載入中...</span></span>
+        </div>
+    </div>
+    
+    <!-- 月份選擇器 -->
+    <div class="calendar-controls">
+        <button class="month-nav-btn" id="prev-month" onclick="changeMonth(-1)">‹</button>
+        <h3 class="current-month" id="current-month">載入中...</h3>
+        <button class="month-nav-btn" id="next-month" onclick="changeMonth(1)">›</button>
+    </div>
+    
+    <!-- 月曆容器 -->
+    <div class="calendar-container">
+        <div id="schedule-content" class="calendar-grid">
+            <div class="loading-item">正在載入班表資料...</div>
+        </div>
+    </div>
+    
+    <!-- 班別代號說明 -->
+    <div class="schedule-legend">
+        <h4>班別代號說明</h4>
+        <div class="legend-grid">
+            <span class="legend-item"><span class="legend-code shift-A">A</span>早班+午班</span>
+            <span class="legend-item"><span class="legend-code shift-B">B</span>午班+晚班</span>
+            <span class="legend-item"><span class="legend-code shift-C">C</span>早班+晚班</span>
+            <span class="legend-item"><span class="legend-code shift-full">全</span>全天班</span>
+            <span class="legend-item"><span class="legend-code shift-morning">早</span>早班</span>
+            <span class="legend-item"><span class="legend-code shift-afternoon">午</span>午班</span>
+            <span class="legend-item"><span class="legend-code shift-evening">晚</span>晚班</span>
+            <span class="legend-item"><span class="legend-code shift-off">休</span>休假</span>
+        </div>
+    </div>
+</section>
 
             <!-- 學術活動分頁 - 改為時間線條列 -->
             <section id="academic" class="tab-content" role="tabpanel" aria-labelledby="academic-tab">
@@ -158,4 +182,5 @@
     <script src="script.js"></script>
 </body>
 </html>
+
 
