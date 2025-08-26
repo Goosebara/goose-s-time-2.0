@@ -78,31 +78,50 @@ function parseExceptionDate(dateStr) {
 function parseExceptionShift(exceptionStr) {
     if (!exceptionStr) return null;
     
-    // 例如："2025/9/9 只有早診" 或 "9/26 全日上班"
+    // 分割日期和描述
     const parts = exceptionStr.split(' ');
+    
+    // 如果只有日期沒有描述，代表不上診
+    if (parts.length === 1) {
+        return { code: '休', class: 'shift-off' };
+    }
+    
+    // 如果有描述，解析班別資訊
     if (parts.length >= 2) {
         const shiftInfo = parts.slice(1).join(' ');
         
-        if (shiftInfo.includes('只有早診') || shiftInfo.includes('早診')) {
-            return { code: '早', class: 'shift-morning' };
-        } else if (shiftInfo.includes('只有午診') || shiftInfo.includes('午診')) {
-            return { code: '午', class: 'shift-afternoon' };
-        } else if (shiftInfo.includes('只有晚診') || shiftInfo.includes('晚診')) {
-            return { code: '晚', class: 'shift-evening' };
-        } else if (shiftInfo.includes('早午診')) {
+        // 檢查是否包含早午晚三個時段
+        const hasEarly = shiftInfo.includes('早');
+        const hasAfternoon = shiftInfo.includes('午');
+        const hasEvening = shiftInfo.includes('晚');
+        
+        // 根據時段組合判斷
+        if (hasEarly && hasAfternoon && hasEvening) {
+            return { code: '全', class: 'shift-full' };
+        } else if (hasEarly && hasAfternoon && !hasEvening) {
             return { code: 'A', class: 'shift-A' };
-        } else if (shiftInfo.includes('午晚診')) {
+        } else if (!hasEarly && hasAfternoon && hasEvening) {
             return { code: 'B', class: 'shift-B' };
-        } else if (shiftInfo.includes('早晚診')) {
+        } else if (hasEarly && !hasAfternoon && hasEvening) {
             return { code: 'C', class: 'shift-C' };
+        } else if (hasEarly && !hasAfternoon && !hasEvening) {
+            return { code: '早', class: 'shift-morning' };
+        } else if (!hasEarly && hasAfternoon && !hasEvening) {
+            return { code: '午', class: 'shift-afternoon' };
+        } else if (!hasEarly && !hasAfternoon && hasEvening) {
+            return { code: '晚', class: 'shift-evening' };
         } else if (shiftInfo.includes('全日') || shiftInfo.includes('全天')) {
             return { code: '全', class: 'shift-full' };
         } else if (shiftInfo.includes('休假') || shiftInfo.includes('不上診')) {
             return { code: '休', class: 'shift-off' };
+        } else {
+            // 無法明確判斷的情況，顯示"異"代表異常班別
+            return { code: '異', class: 'shift-other' };
         }
     }
     
-    return { code: '特', class: 'shift-other' };
+    // 預設情況
+    return { code: '休', class: 'shift-off' };
 }
 
 // 日期比較函數
@@ -700,3 +719,4 @@ async function loadAllData() {
 document.addEventListener('DOMContentLoaded', function() {
     loadAllData();
 });
+
