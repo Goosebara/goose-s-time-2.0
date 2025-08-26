@@ -491,37 +491,27 @@ body::before {
     color: var(--text-secondary);
 }
 
-/* ===== 時間線容器（學術活動用） ===== */
+/* ===== 學術活動卡片容器 ===== */
 .timeline-container {
     position: relative;
 }
 
 .timeline-list {
     position: relative;
-    padding-left: var(--spacing-xl);
+    padding-left: 0; /* 移除左邊距 */
 }
 
+/* 移除時間線 */
 .timeline-list::before {
-    content: '';
-    position: absolute;
-    left: var(--spacing-md);
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: linear-gradient(to bottom, 
-        var(--apple-blue) 0%, 
-        var(--apple-purple) 50%, 
-        var(--apple-green) 100%);
-    border-radius: 1px;
-    opacity: 0.3;
+    display: none;
 }
 
 .timeline-item {
-    background: var(--glass-light);
+    background: var(--glass-ultra-light);
     backdrop-filter: blur(25px) saturate(180%);
     border-radius: var(--radius-lg);
-    border: 1px solid var(--glass-border-light);
-    box-shadow: var(--shadow-soft);
+    border: 2px solid var(--glass-border-light);
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
     margin-bottom: var(--spacing-lg);
     padding: var(--spacing-lg);
     position: relative;
@@ -538,37 +528,67 @@ body::before {
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
 }
 
+/* 移除圓點 */
 .timeline-item::after {
-    content: '';
-    position: absolute;
-    left: calc(-var(--spacing-xl) - 6px);
-    top: var(--spacing-lg);
-    width: 12px;
-    height: 12px;
-    background: var(--apple-blue);
-    border-radius: 50%;
-    border: 3px solid var(--glass-ultra-light);
-    box-shadow: 0 0 12px rgba(0, 122, 255, 0.3);
+    display: none;
 }
 
 .timeline-item:hover {
-    transform: translateX(4px);
+    transform: translateY(-2px); /* 改為垂直懸浮效果 */
     background: var(--glass-ultra-light);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
-.timeline-item.past::after {
-    background: var(--text-disabled);
-    box-shadow: none;
+.timeline-item.past {
+    background: rgba(0, 0, 0, 0.05);
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    color: var(--text-disabled);
 }
 
-.timeline-item.today::after {
-    background: var(--apple-red);
-    box-shadow: 0 0 16px rgba(255, 59, 48, 0.5);
+.timeline-item.today-marker {
+    background: rgba(255, 59, 48, 0.15);
+    border: 2px solid var(--apple-red);
 }
 
-.timeline-item.upcoming::after {
-    background: var(--apple-green);
-    box-shadow: 0 0 12px rgba(52, 199, 89, 0.4);
+.timeline-item.upcoming {
+    background: rgba(52, 199, 89, 0.15);
+    border: 2px solid var(--apple-green);
+}
+
+/* 學術活動內容樣式 */
+.timeline-item .activity-date {
+    background: rgba(0, 122, 255, 0.15);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-xs);
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+    display: inline-block;
+    color: var(--apple-blue);
+}
+
+.timeline-item .activity-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--separator-light);
+    padding-bottom: var(--spacing-xs);
+}
+
+.timeline-item .activity-details {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+}
+
+.timeline-item .activity-details span {
+    background: rgba(255, 255, 255, 0.6);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-xs);
+    margin-right: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
+    display: inline-block;
+    border: 1px solid var(--separator-light);
 }
 
 /* ===== 事件列表容器（預排行程用） ===== */
@@ -2103,6 +2123,7 @@ body::before {
         grid-template-columns: 1fr;
     }
 }
+
 
 
 
