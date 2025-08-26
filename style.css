@@ -2066,6 +2066,18 @@ body::before {
     color: white;
 }
 
+.legend-code.shift-A { background: var(--apple-blue); }
+.legend-code.shift-B { background: var(--apple-purple); }
+.legend-code.shift-C { background: var(--apple-orange); }
+.legend-code.shift-full { background: var(--apple-red); }
+.legend-code.shift-morning { background: var(--apple-green); }
+.legend-code.shift-afternoon { background: #34A853; }
+.legend-code.shift-evening { background: #1976D2; }
+.legend-code.shift-off { 
+    background: var(--text-disabled); 
+    color: white;
+}
+
 /* 手機版月曆優化 */
 @media (max-width: 767px) {
     .calendar-controls {
@@ -2123,6 +2135,7 @@ body::before {
         grid-template-columns: 1fr;
     }
 }
+
 
 
 
