@@ -407,7 +407,7 @@ function renderTodayAcademic() {
 
     const rows = academicData.slice(1);
     rows.forEach(row => {
-        if (row[1] === todayString || row[1] === todayStringWithZero) {
+        if (row[0] === todayString || row[0] === todayStringWithZero) {
             found = true;
             const time = row[2] || '';
             const title = row[3] || '未命名活動';
@@ -470,7 +470,7 @@ function renderTodayAppointments() {
 // 渲染近期預告
 function renderUpcomingEvents() {
     let html = '';
-    const upcomingAcademic = getUpcomingEvents(academicData, 1);
+    const upcomingAcademic = getUpcomingEvents(academicData, 0);
     const upcomingAppointments = getUpcomingEvents(appointmentsData, 0);
 
     if (upcomingAcademic.length > 0) {
@@ -530,15 +530,15 @@ function getUpcomingEvents(data, dateColumnIndex) {
         if (eventDate > today && eventDate <= weekFromNow) {
             let title, details;
             
-            if (dateColumnIndex === 1) { // 學術活動
-                title = row[3] || '未命名活動';
-                const location = row[4] || '';
-                const speaker = row[5] || '';
-                details = [location, speaker].filter(x => x).join(' | ');
-            } else { // 預排行程
-                title = row[2] || '預排行程';
-                details = '';
-            }
+            if (data === academicData) { // 學術活動
+    title = row[3] || '未命名活動';
+    const location = row[4] || '';
+    const speaker = row[5] || '';
+    details = [location, speaker].filter(x => x).join(' | ');
+} else { // 預排行程
+    title = row[2] || '預排行程';
+    details = '';
+}
 
             events.push({
                 date: dateStr,
@@ -600,8 +600,8 @@ function renderAcademic(data) {
 
     // 按日期排序
     const rows = data.slice(1).sort((a, b) => {
-        const dateA = parseDate(a[1]);
-        const dateB = parseDate(b[1]);
+        const dateA = parseDate(a[0]);
+        const dateB = parseDate(b[0]);
         if (!dateA && !dateB) return 0;
         if (!dateA) return 1;
         if (!dateB) return -1;
@@ -611,12 +611,13 @@ function renderAcademic(data) {
     let html = '<div class="activity-timeline">';
 
     rows.forEach(row => {
-        if (row[1] || row[3]) { // 確保有開始日期或活動名稱
-            const startDate = row[1] || '';  // B欄位：活動開始日期
-            const time = row[2] || '';       // C欄位：時間
-            const title = row[3] || '未命名活動';  // D欄位：活動名稱
-            const location = row[4] || '';   // E欄位：活動地點
-            const speaker = row[5] || '';    // F欄位：講者
+if (row[0] || row[3]) { // 確保有開始日期或活動名稱
+    const startDate = row[0] || '';  // A欄位：活動開始日期
+    const endDate = row[1] || '';    // B欄位：活動結束日期
+    const time = row[2] || '';       // C欄位：時間
+    const title = row[3] || '未命名活動';  // D欄位：活動名稱
+    const location = row[4] || '';   // E欄位：活動地點
+    const speaker = row[5] || '';    // F欄位：講者
 
             let cssClass = 'activity-item';
             if (isDatePast(startDate)) {
@@ -630,7 +631,7 @@ function renderAcademic(data) {
             html += `
                 <div class="${cssClass}">
                     <div class="activity-date">
-                        📅 ${startDate}
+                        📅 ${startDate}${endDate && endDate !== startDate ? ` ~ ${endDate}` : ''}
                         ${time ? ` ⏰ ${time}` : ''}
                     </div>
                     <div class="activity-title">${title}</div>
@@ -726,5 +727,6 @@ async function loadAllData() {
 document.addEventListener('DOMContentLoaded', function() {
     loadAllData();
 });
+
 
 
