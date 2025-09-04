@@ -125,6 +125,7 @@ function parseExceptionShift(exceptionStr) {
 }
 
 // 檢測並轉換網址為按鈕
+// 檢測並轉換網址為按鈕
 function convertUrlsToButtons(text) {
     if (!text) return text;
     
@@ -133,16 +134,20 @@ function convertUrlsToButtons(text) {
     
     return text.replace(urlRegex, (url) => {
         // 確保網址有完整的協議
-        const fullUrl = url.startsWith('http') ? url : `https://${url}`;
-        // 提取域名作為按鈕文字
-        const displayText = url.replace(/^https?:\/\//, '').split('/')[0];
+        let fullUrl = url.startsWith('http') ? url : `https://${url}`;
+        // 清理網址末尾的標點符號
+        fullUrl = fullUrl.replace(/[.,;!?]+$/, '');
         
-        return `<button class="url-button" onclick="window.open('${fullUrl}', '_blank')" title="${fullUrl}">
-                    🔗 ${displayText}
-                </button>`;
+        // 提取域名作為按鈕文字
+        const displayText = fullUrl.replace(/^https?:\/\//, '').split('/')[0];
+        
+        return `<span class="url-button-wrapper">
+                    <button class="url-button" onclick="window.open('${fullUrl}', '_blank')" title="${fullUrl}">
+                        🔗 ${displayText}
+                    </button>
+                </span>`;
     });
 }
-
 
 // 日期比較函數
 function parseDate(dateStr) {
