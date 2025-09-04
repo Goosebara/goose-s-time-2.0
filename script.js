@@ -124,6 +124,26 @@ function parseExceptionShift(exceptionStr) {
     return { code: '休', class: 'shift-off' };
 }
 
+// 檢測並轉換網址為按鈕
+function convertUrlsToButtons(text) {
+    if (!text) return text;
+    
+    // 網址正則表達式（支援 http、https、www 開頭的網址）
+    const urlRegex = /(https?:\/\/[^\s]+|www\.[^\s]+)/gi;
+    
+    return text.replace(urlRegex, (url) => {
+        // 確保網址有完整的協議
+        const fullUrl = url.startsWith('http') ? url : `https://${url}`;
+        // 提取域名作為按鈕文字
+        const displayText = url.replace(/^https?:\/\//, '').split('/')[0];
+        
+        return `<button class="url-button" onclick="window.open('${fullUrl}', '_blank')" title="${fullUrl}">
+                    🔗 ${displayText}
+                </button>`;
+    });
+}
+
+
 // 日期比較函數
 function parseDate(dateStr) {
     if (!dateStr) return null;
@@ -366,9 +386,9 @@ function renderTodaySchedule() {
         // 同時檢查月份和星期
         if (row[0] === currentMonthName && row[1] === todayWeekday) {
             found = true;
-            const cleanSession1 = row[2] ? row[2].replace(/診次一[：:]\s*/g, '') : '';
-            const cleanSession2 = row[3] ? row[3].replace(/診次二[：:]\s*/g, '') : '';
-            const cleanSession3 = row[4] ? row[4].replace(/診次三[：:]\s*/g, '') : '';
+const cleanSession1 = row[2] ? convertUrlsToButtons(row[2].replace(/診次一[：:]\s*/g, '')) : '';
+const cleanSession2 = row[3] ? convertUrlsToButtons(row[3].replace(/診次二[：:]\s*/g, '')) : '';
+const cleanSession3 = row[4] ? convertUrlsToButtons(row[4].replace(/診次三[：:]\s*/g, '')) : '';
 
             html += '<div class="today-item highlight">';
             html += `<div class="schedule-date">📅 ${row[0]} ${row[1]}</div>`;
@@ -410,9 +430,9 @@ function renderTodayAcademic() {
         if (row[0] === todayString || row[0] === todayStringWithZero) {
             found = true;
             const time = row[2] || '';
-            const title = row[3] || '未命名活動';
-            const location = row[4] || '';
-            const speaker = row[5] || '';
+const title = convertUrlsToButtons(row[3]) || '未命名活動';
+const location = convertUrlsToButtons(row[4]) || '';
+const speaker = convertUrlsToButtons(row[5]) || '';
 
             html += '<div class="today-item highlight">';
             html += `<div class="academic-title">🎓 ${title}</div>`;
@@ -615,9 +635,9 @@ if (row[0] || row[3]) { // 確保有開始日期或活動名稱
     const startDate = row[0] || '';  // A欄位：活動開始日期
     const endDate = row[1] || '';    // B欄位：活動結束日期
     const time = row[2] || '';       // C欄位：時間
-    const title = row[3] || '未命名活動';  // D欄位：活動名稱
-    const location = row[4] || '';   // E欄位：活動地點
-    const speaker = row[5] || '';    // F欄位：講者
+    const title = convertUrlsToButtons(row[3]) || '未命名活動';  // D欄位：活動名稱
+    const location = convertUrlsToButtons(row[4]) || '';   // E欄位：活動地點
+    const speaker = convertUrlsToButtons(row[5]) || '';    // F欄位：講者
 
             let cssClass = 'activity-item';
             if (isDatePast(startDate)) {
@@ -670,7 +690,7 @@ function renderAppointments(data) {
         if (row[0]) { // 確保有開始日期
             const startDate = row[0] || '';    // A欄位：活動開始日期
             const endDate = row[1] || '';      // B欄位：活動結束日期
-            const location = row[2] || '';     // C欄位：活動地點
+            const location = convertUrlsToButtons(row[2]) || '';     // C欄位：活動地點
 
             let cssClass = 'event-item';
             if (isDatePast(startDate)) {
@@ -727,6 +747,7 @@ async function loadAllData() {
 document.addEventListener('DOMContentLoaded', function() {
     loadAllData();
 });
+
 
 
 
