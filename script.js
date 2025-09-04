@@ -577,13 +577,13 @@ function getUpcomingEvents(data, dateColumnIndex) {
         if (eventDate > today && eventDate <= weekFromNow) {
             let title, details;
             
-            if (data === academicData) { // 學術活動
-    title = row[3] || '未命名活動';
-    const location = row[4] || '';
-    const speaker = row[5] || '';
+if (data === academicData) { // 學術活動
+    title = convertUrlsToButtons(row[3]) || '未命名活動';
+    const location = convertUrlsToButtons(row[4]) || '';
+    const speaker = convertUrlsToButtons(row[5]) || '';
     details = [location, speaker].filter(x => x).join(' | ');
 } else { // 預排行程
-    title = row[2] || '預排行程';
+    title = convertUrlsToButtons(row[2]) || '預排行程';
     details = '';
 }
 
@@ -774,8 +774,3 @@ async function loadAllData() {
 document.addEventListener('DOMContentLoaded', function() {
     loadAllData();
 });
-
-
-
-
-
