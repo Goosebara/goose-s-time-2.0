@@ -365,6 +365,7 @@ function renderOverview() {
 }
 
 // 渲染今日班表
+// 渲染今日班表
 function renderTodaySchedule() {
     if (!scheduleData) {
         document.getElementById('today-schedule').innerHTML = '<div class="loading-item">班表資料載入中...</div>';
@@ -386,22 +387,43 @@ function renderTodaySchedule() {
         // 同時檢查月份和星期
         if (row[0] === currentMonthName && row[1] === todayWeekday) {
             found = true;
-const cleanSession1 = row[2] ? convertUrlsToButtons(row[2].replace(/診次一[：:]\s*/g, '')) : '';
-const cleanSession2 = row[3] ? convertUrlsToButtons(row[3].replace(/診次二[：:]\s*/g, '')) : '';
-const cleanSession3 = row[4] ? convertUrlsToButtons(row[4].replace(/診次三[：:]\s*/g, '')) : '';
+            const cleanSession1 = row[2] ? convertUrlsToButtons(row[2].replace(/診次一[：:]\s*/g, '')) : '';
+            const cleanSession2 = row[3] ? convertUrlsToButtons(row[3].replace(/診次二[：:]\s*/g, '')) : '';
+            const cleanSession3 = row[4] ? convertUrlsToButtons(row[4].replace(/診次三[：:]\s*/g, '')) : '';
 
             html += '<div class="today-item highlight">';
             html += `<div class="schedule-date">📅 ${row[0]} ${row[1]}</div>`;
-            if (cleanSession1) html += `<div class="schedule-session">🏥 ${cleanSession1}</div>`;
-            if (cleanSession2) html += `<div class="schedule-session">🏥 ${cleanSession2}</div>`;
-            if (cleanSession3) html += `<div class="schedule-session">🏥 ${cleanSession3}</div>`;
-
-            // 檢查例外日期
+            
+            // 檢查並處理例外日期
             const todayDateString = getTodayString();
-            if ((row[5] && row[5].includes(todayDateString.slice(-5))) || 
-                (row[6] && row[6].includes(todayDateString.slice(-5)))) {
-                html += '<div class="schedule-exception">🚫 今日不上診 (例外日期)</div>';
+            let hasException = false;
+            let exceptionInfo = null;
+
+            // 檢查例外日期一（F欄）
+            if (row[5] && row[5].includes(todayDateString.slice(-5))) {
+                hasException = true;
+                exceptionInfo = parseExceptionShift(row[5]);
             }
+            // 檢查例外日期二（G欄）
+            else if (row[6] && row[6].includes(todayDateString.slice(-5))) {
+                hasException = true;
+                exceptionInfo = parseExceptionShift(row[6]);
+            }
+
+            if (hasException && exceptionInfo) {
+                // 顯示例外日期的班別資訊
+                if (exceptionInfo.code === '休') {
+                    html += '<div class="schedule-exception">🚫 今日不上診 (例外日期)</div>';
+                } else {
+                    html += `<div class="schedule-exception">⚠️ 今日特殊班別: ${exceptionInfo.code}</div>`;
+                }
+            } else {
+                // 只有在沒有例外日期時才顯示原本的班表
+                if (cleanSession1) html += `<div class="schedule-session">🏥 ${cleanSession1}</div>`;
+                if (cleanSession2) html += `<div class="schedule-session">🏥 ${cleanSession2}</div>`;
+                if (cleanSession3) html += `<div class="schedule-session">🏥 ${cleanSession3}</div>`;
+            }
+            
             html += '</div>';
         }
     });
@@ -747,7 +769,3 @@ async function loadAllData() {
 document.addEventListener('DOMContentLoaded', function() {
     loadAllData();
 });
-
-
-
-
