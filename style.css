@@ -2136,6 +2136,28 @@ body::before {
     }
 }
 
+.url-button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 4px 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin: 2px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.url-button:hover {
+    background-color: #45a049;
+}
+
+.url-button:active {
+    background-color: #3e8e41;
+}
 
 
 
