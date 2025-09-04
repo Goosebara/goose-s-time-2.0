@@ -2168,6 +2168,21 @@ body::before {
     background-color: #3e8e41;
 }
 
+.url-button-wrapper {
+    display: inline-block;
+    margin: 2px 0;
+}
+
+.schedule-exception {
+    color: #ff6b35;
+    font-weight: bold;
+    background-color: #fff3e0;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin: 2px 0;
+}
+
+
 
 
 
