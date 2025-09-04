@@ -491,6 +491,15 @@ body::before {
     color: var(--text-secondary);
 }
 
+.schedule-exception {
+    color: #ff6b35;
+    font-weight: bold;
+    background-color: #fff3e0;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin: 2px 0;
+}
+
 /* ===== 學術活動卡片容器 ===== */
 .timeline-container {
     position: relative;
@@ -2158,6 +2167,7 @@ body::before {
 .url-button:active {
     background-color: #3e8e41;
 }
+
 
 
 
