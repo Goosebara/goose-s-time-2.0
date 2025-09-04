@@ -404,16 +404,16 @@ function renderTodaySchedule() {
             let hasException = false;
             let exceptionInfo = null;
 
-            // 檢查例外日期一（F欄）
-            if (row[5] && row[5].includes(todayDateString.slice(-5))) {
-                hasException = true;
-                exceptionInfo = parseExceptionShift(row[5]);
-            }
-            // 檢查例外日期二（G欄）
-            else if (row[6] && row[6].includes(todayDateString.slice(-5))) {
-                hasException = true;
-                exceptionInfo = parseExceptionShift(row[6]);
-            }
+// 檢查例外日期一（F欄）
+if (row[5] && (row[5].includes(todayDateString.slice(-5)) || row[5].includes('9/4'))) {
+    hasException = true;
+    exceptionInfo = parseExceptionShift(row[5]);
+}
+// 檢查例外日期二（G欄）  
+else if (row[6] && (row[6].includes(todayDateString.slice(-5)) || row[6].includes('9/4'))) {
+    hasException = true;
+    exceptionInfo = parseExceptionShift(row[6]);
+}
 
             if (hasException && exceptionInfo) {
                 // 顯示例外日期的班別資訊
@@ -774,3 +774,8 @@ async function loadAllData() {
 document.addEventListener('DOMContentLoaded', function() {
     loadAllData();
 });
+
+
+
+
+
